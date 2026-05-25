@@ -1,3 +1,5 @@
+import { MatchResponse } from "@/types/football";
+
 const BASE_URL = "https://v3.football.api-sports.io";
 
 const footballFetch = async (endpoint: string) => {
@@ -12,7 +14,7 @@ const footballFetch = async (endpoint: string) => {
   return response.json();
 };
 
-export const matchStats = async (matchId: number) => {
+export const matchStats = async (matchId: number): Promise<MatchResponse> => {
   try {
     return await footballFetch(`/fixtures?id=${matchId}`);
   } catch (err) {
@@ -20,7 +22,7 @@ export const matchStats = async (matchId: number) => {
     throw new Error(`Failed to fetch statistics for match ${matchId}`);
   }
 };
-export const matchLineups = async (matchId: number) => {
+export const matchLineups = async (matchId: number): Promise<MatchResponse> => {
   try {
     return await footballFetch(`/fixtures/lineups?fixture=${matchId}`);
   } catch (err) {
@@ -28,7 +30,7 @@ export const matchLineups = async (matchId: number) => {
     throw new Error(`Failed to fetch lineups for match ${matchId}`);
   }
 };
-export const matchEvents = async (matchId: number) => {
+export const matchEvents = async (matchId: number): Promise<MatchResponse> => {
   try {
     return await footballFetch(`/fixtures/events?fixture=${matchId}`);
   } catch (err) {
