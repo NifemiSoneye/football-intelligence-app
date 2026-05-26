@@ -39,10 +39,13 @@ export const getFixtures = async (
 };
 export const getResults = async (
   leagueId: number,
+  season?: number,
 ): Promise<MatchesResponse> => {
   try {
+    const params = new URLSearchParams({ status: "FINISHED" });
+    if (season) params.set("season", String(season));
     return await footballFetch(
-      `/competitions/${leagueId}/matches?status=FINISHED`,
+      `/competitions/${leagueId}/matches?${params.toString()}`,
     );
   } catch (err) {
     console.error(err);
@@ -71,9 +74,12 @@ export const getTeamFixtures = async (
 };
 export const getTeamResults = async (
   teamId: number,
+  season?: number,
 ): Promise<MatchesResponse> => {
   try {
-    return await footballFetch(`/teams/${teamId}/matches?status=FINISHED`);
+    const params = new URLSearchParams({ status: "FINISHED" });
+    if (season) params.set("season", String(season));
+    return await footballFetch(`/teams/${teamId}/matches?${params.toString()}`);
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch fixtures for team ${teamId}`);
