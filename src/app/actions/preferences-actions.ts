@@ -8,8 +8,6 @@ import { userPreferences, users } from "@/db/schema";
 import { actionClient } from "@/lib/safe-action";
 import {
   insertUserPreferencesSchema,
-  updateUserPreferencesSchema,
-  type updateUserPreferencesType,
   type insertUserPreferencesType,
 } from "@/zod-schemas/preferences";
 
@@ -42,7 +40,7 @@ export const savePreferencesAction = actionClient
       });
 
       if (existing) {
-        const result = await db
+        await db
           .update(userPreferences)
           .set({
             favoriteLeaguesIds: userPreference.favoriteLeaguesIds,
@@ -54,7 +52,7 @@ export const savePreferencesAction = actionClient
           message: "User Preferences updated successfully",
         };
       }
-      const result = await db.insert(userPreferences).values({
+      await db.insert(userPreferences).values({
         id: crypto.randomUUID(),
         userId: dbUser.id,
         favoriteLeaguesIds: userPreference.favoriteLeaguesIds,

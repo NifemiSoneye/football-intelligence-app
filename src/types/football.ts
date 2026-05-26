@@ -395,10 +395,22 @@ export interface PlayerStatDetail {
     assists?: number | null;
     saves?: number | null;
   };
-  passes: { total?: number | null; key?: number | null; accuracy?: string | null };
-  tackles: { total?: number | null; blocks?: number | null; interceptions?: number | null };
+  passes: {
+    total?: number | null;
+    key?: number | null;
+    accuracy?: string | null;
+  };
+  tackles: {
+    total?: number | null;
+    blocks?: number | null;
+    interceptions?: number | null;
+  };
   duels: { total?: number | null; won?: number | null };
-  dribbles: { attempts?: number | null; success?: number | null; past?: number | null };
+  dribbles: {
+    attempts?: number | null;
+    success?: number | null;
+    past?: number | null;
+  };
   fouls: { drawn?: number | null; committed?: number | null };
   cards: { yellow: number; red: number };
   penalty: {
@@ -408,4 +420,28 @@ export interface PlayerStatDetail {
     missed: number;
     saved?: number | null;
   };
+}
+
+export interface TeamsResponse {
+  count: number;
+  filters: {
+    season: string;
+  };
+  competition: Competition;
+  season: Season;
+  teams: Team[];
+}
+
+export interface Team {
+  id: number;
+  name: string;
+  shortName: string;
+  tla: string;
+  crest: string;
+  address: string;
+  website: string;
+  founded: number;
+  clubColors: string;
+  venue: string;
+  lastUpdated: string;
 }

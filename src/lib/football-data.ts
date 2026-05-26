@@ -1,7 +1,7 @@
 const BASE_URL = "https://api.football-data.org/v4";
 import { StandingsResponse } from "@/types/football";
 import { MatchesResponse } from "@/types/football";
-import { TeamInfoResponse } from "@/types/football";
+import { TeamInfoResponse, TeamsResponse } from "@/types/football";
 
 const footballFetch = async (endpoint: string) => {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -83,5 +83,16 @@ export const getTeamResults = async (
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch fixtures for team ${teamId}`);
+  }
+};
+
+export const getLeagueTeams = async (
+  leagueId: number,
+): Promise<TeamsResponse> => {
+  try {
+    return await footballFetch(`/competitions/${leagueId}/teams`);
+  } catch (err) {
+    console.error(err);
+    throw new Error(`Failed to fetch teams for league ${leagueId}`);
   }
 };
