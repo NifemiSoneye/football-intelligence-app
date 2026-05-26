@@ -1,12 +1,10 @@
-"user-server";
+"use server";
 
 import { eq } from "drizzle-orm";
 import { flattenValidationErrors } from "next-safe-action";
 import { redirect } from "next/navigation";
-import { sql } from "drizzle-orm";
-
 import { db } from "@/db";
-import { userPreferences } from "@/db/schema";
+import { userPreferences, users } from "@/db/schema";
 import { actionClient } from "@/lib/safe-action";
 import {
   insertUserPreferencesSchema,
@@ -25,10 +23,45 @@ export const savePreferencesAction = actionClient
   })
   .action(
     async ({
-      parsedInput: userPreferences,
+      parsedInput: userPreference,
     }: {
       parsedInput: insertUserPreferencesType;
     }) => {
-      const { getUser };
+      const { getUser } = getKindeServerSession();
+      const kindeUser = await getUser();
+      if (!kindeUser?.id) redirect("/login");
+
+      const dbUser = await db.query.users.findFirst({
+        where: eq(users.kindeId, kindeUser.id),
+      });
+
+      if (!dbUser) throw new Error("User not found");
+
+      const existing = await db.query.userPreferences.findFirst({
+        where: eq(userPreferences.userId, dbUser.id),
+      });
+
+      if (existing) {
+        const result = await db
+          .update(userPreferences)
+          .set({
+            favoriteLeaguesIds: userPreference.favoriteLeaguesIds,
+            favoriteTeamsIds: userPreference.favoriteTeamsIds,
+            updatedAt: new Date(),
+          })
+          .where(eq(userPreferences.id, existing.id));
+        return {
+          message: "User Preferences updated successfully",
+        };
+      }
+      const result = await db.insert(userPreferences).values({
+        id: crypto.randomUUID(),
+        userId: dbUser.id,
+        favoriteLeaguesIds: userPreference.favoriteLeaguesIds,
+        favoriteTeamsIds: userPreference.favoriteTeamsIds,
+      });
+      return {
+        message: "User Preferences created successfully",
+      };
     },
   );
