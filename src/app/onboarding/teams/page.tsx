@@ -53,13 +53,23 @@ export default function TeamsPage() {
         selected={selectedTeams}
         onChange={setSelectedTeams}
       />
-      <div className="flex gap-4">
-        <Button variant="outline" onClick={() => router.back()}>
-          Back
-        </Button>
-        <Button onClick={handleSubmit} disabled={isPending}>
-          {isPending ? "Saving..." : "Get Started"}
-        </Button>
+      <div className="flex items-center justify-between mt-4">
+        <div>
+          <p className="text-[15px] text-[#666] leading-[1.6] flex gap-2 ">
+            <span className="text-[#e8ff47] font-display">
+              {selectedTeams.length}
+            </span>
+            teams selected
+          </p>
+        </div>
+        <div className="flex gap-4">
+          <Button variant="outline" onClick={() => router.back()}>
+            Back
+          </Button>
+          <Button onClick={handleSubmit} disabled={isPending}>
+            {isPending ? "Saving..." : "Get Started"}
+          </Button>
+        </div>
       </div>
     </div>
   );

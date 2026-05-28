@@ -13,11 +13,11 @@ export default function StepIndicator({ step }: Props) {
             ${
               step === 1
                 ? "bg-[#e8ff47] text-black"
-                : "bg-transparent text-[#666]"
+                : " text-[black] border-[#666] bg-[#666]"
             }
           `}
         >
-          <p>1</p>
+          {step === 1 ? 1 : "✓"}
         </div>
 
         <p className={step === 1 ? "text-[#e8ff47]" : "text-[#666]"}>LEAGUES</p>
