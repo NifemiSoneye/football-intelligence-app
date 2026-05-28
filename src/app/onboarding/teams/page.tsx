@@ -40,7 +40,7 @@ export default function TeamsPage() {
         <p className="text-[#e8ff47] text-[11px] font-semibold mb-2 tracking-[0.15em]">
           STEP 2 OF 2
         </p>
-        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold">
+        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold lg:text-[4.5rem]">
           Pick your <br /> teams
         </h1>
         <p className="text-[15px] text-[#666] leading-[1.6]">

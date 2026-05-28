@@ -23,17 +23,22 @@ export default function LeaguesPage() {
         <p className="text-[#e8ff47] text-[11px] font-semibold mb-2 tracking-[0.15em]">
           STEP 1 OF 2
         </p>
-        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold">
+        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold lg:text-[4.5rem]">
           Choose your <br /> leagues
         </h1>
-        <p className="text-[15px] text-[#666] leading-[1.6]">
+        <p className="text-[15px] text-[#666] leading-[1.6] lg:hidden">
           Select the competitions you want to follow. You can always change
+          these later.
+        </p>
+        <p className="text-[15px] text-[#666] leading-[1.6] hidden lg:block">
+          Select the competitions you want to follow. You can always change{" "}
+          <br />
           these later.
         </p>
       </section>
 
       <LeaguePicker selected={selectedLeagues} onChange={setSelectedLeagues} />
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center justify-between mt-4 ">
         <p className="text-[15px] text-[#666] leading-[1.6] flex gap-2 ">
           <span className="text-[#e8ff47] font-display">
             {selectedLeagues.length}
