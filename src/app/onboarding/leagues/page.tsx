@@ -17,9 +17,21 @@ export default function LeaguesPage() {
   };
 
   return (
-    <div className="space-y-8 ">
+    <div className="">
       <StepIndicator step={1} />
-      <h2 className="text-lg font-semibold">Select your leagues</h2>
+      <section className="mb-10">
+        <p className="text-[#e8ff47] text-[11px] font-semibold mb-2 tracking-[0.15em]">
+          STEP 1 OF 2
+        </p>
+        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold">
+          Choose your <br /> leagues
+        </h1>
+        <p className="text-[15px] text-[#666] leading-[1.6]">
+          Select the competitions you want to follow. You can always change
+          these later.
+        </p>
+      </section>
+
       <LeaguePicker selected={selectedLeagues} onChange={setSelectedLeagues} />
       <Button onClick={handleNext} disabled={selectedLeagues.length === 0}>
         Next

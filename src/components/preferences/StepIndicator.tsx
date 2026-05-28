@@ -6,7 +6,7 @@ type Props = {
 
 export default function StepIndicator({ step }: Props) {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center mt-4 mb-14">
       <div className="text-[11px] flex items-center gap-2 font-semibold">
         <div
           className={`w-7 h-7 rounded-full p-2 flex items-center justify-center
