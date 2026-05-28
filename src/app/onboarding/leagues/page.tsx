@@ -33,9 +33,17 @@ export default function LeaguesPage() {
       </section>
 
       <LeaguePicker selected={selectedLeagues} onChange={setSelectedLeagues} />
-      <Button onClick={handleNext} disabled={selectedLeagues.length === 0}>
-        Next
-      </Button>
+      <div className="flex items-center justify-between mt-4">
+        <p className="text-[15px] text-[#666] leading-[1.6] flex gap-2 ">
+          <span className="text-[#e8ff47] font-display">
+            {selectedLeagues.length}
+          </span>
+          leagues selected
+        </p>
+        <Button onClick={handleNext} disabled={selectedLeagues.length === 0}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

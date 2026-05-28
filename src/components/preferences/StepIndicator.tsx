@@ -6,8 +6,8 @@ type Props = {
 
 export default function StepIndicator({ step }: Props) {
   return (
-    <div className="flex justify-between items-center mt-4 mb-14">
-      <div className="text-[11px] flex items-center gap-2 font-semibold">
+    <div className="flex justify-between items-center mt-4 mb-14 ">
+      <div className="text-[12px] flex items-center gap-2 font-semibold">
         <div
           className={`w-7 h-7 rounded-full p-2 flex items-center justify-center
             ${
@@ -22,13 +22,13 @@ export default function StepIndicator({ step }: Props) {
 
         <p className={step === 1 ? "text-[#e8ff47]" : "text-[#666]"}>LEAGUES</p>
       </div>
-      <div className=" text-[11px] flex items-center gap-2 font-semibold">
+      <div className=" text-[12px] flex items-center gap-2 font-semibold">
         <div
           className={`w-7 h-7 rounded-full p-2 border border-[#666] flex items-center justify-center
             ${
               step === 2
                 ? "bg-[#e8ff47] text-black"
-                : "bg-transparent text-[#666]"
+                : "bg-transparent text-[#666] border-[#666]"
             }
           `}
         >

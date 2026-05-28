@@ -23,7 +23,19 @@ export default function LeaguePicker({ selected, onChange }: Props) {
         <div
           key={league.id}
           onClick={() => handleClick(league.id)}
-          className="bg-[#111111] border border-[#ffffff12] p-5 cursor-pointer flex flex-col items-center rounded-md"
+          style={
+            selected.includes(league.id)
+              ? {
+                  boxShadow:
+                    "0 0 0 1px #e8ff47, 0 8px 32px rgba(232,255,71,0.12)",
+                }
+              : undefined
+          }
+          className={` border p-5 cursor-pointer flex flex-col items-center rounded-md transition-all ${
+            selected.includes(league.id)
+              ? "border-[#e8ff47] bg-[#e8ff4712] "
+              : "border-[#ffffff12] bg-[#111111]"
+          }`}
         >
           <Image
             src={league.crest}
@@ -32,7 +44,11 @@ export default function LeaguePicker({ selected, onChange }: Props) {
             height={80}
             className="object-contain"
           />
-          <p className="font-semibold text-center  text-[13px] text-white leading-[1.3] mt-3">
+          <p
+            className={`font-semibold text-center  text-[13px] leading-[1.3] mt-3 transition-colors ${
+              selected.includes(league.id) ? "text-[#e8ff47]" : "text-white "
+            }`}
+          >
             {league.name}
           </p>
           <p className="text-[11px] text-[#666]">{league.region}</p>

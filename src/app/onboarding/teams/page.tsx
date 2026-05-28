@@ -10,6 +10,7 @@ import {
   userPreferencesInputSchema,
   type userPreferencesInputType,
 } from "@/zod-schemas/preferences";
+import StepIndicator from "@/components/preferences/StepIndicator";
 
 export default function TeamsPage() {
   const router = useRouter();
@@ -33,8 +34,20 @@ export default function TeamsPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <h2 className="text-lg font-semibold">Select your teams</h2>
+    <div className="">
+      <StepIndicator step={2} />
+      <section className="mb-10">
+        <p className="text-[#e8ff47] text-[11px] font-semibold mb-2 tracking-[0.15em]">
+          STEP 2 OF 2
+        </p>
+        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold">
+          Pick your <br /> teams
+        </h1>
+        <p className="text-[15px] text-[#666] leading-[1.6]">
+          Choose the teams you want to follow across your selected leagues.
+        </p>
+      </section>
+
       <TeamPicker
         selectedLeagues={selectedLeagues}
         selected={selectedTeams}
