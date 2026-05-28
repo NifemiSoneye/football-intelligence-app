@@ -7,7 +7,7 @@ export const insertUserPreferencesSchema = createInsertSchema(userPreferences, {
   favoriteTeamsIds: z.array(z.number()),
 });
 
-export const updateUserPreferencesSchema = insertUserPreferencesSchema.pick({
+export const userPreferencesInputSchema = insertUserPreferencesSchema.pick({
   favoriteLeaguesIds: true,
   favoriteTeamsIds: true,
 });
@@ -15,6 +15,6 @@ export const updateUserPreferencesSchema = insertUserPreferencesSchema.pick({
 export type insertUserPreferencesType = z.infer<
   typeof insertUserPreferencesSchema
 >;
-export type updateUserPreferencesType = z.infer<
-  typeof updateUserPreferencesSchema
+export type userPreferencesInputType = z.infer<
+  typeof userPreferencesInputSchema
 >;

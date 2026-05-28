@@ -9,13 +9,15 @@ import { actionClient } from "@/lib/safe-action";
 import {
   insertUserPreferencesSchema,
   type insertUserPreferencesType,
+  userPreferencesInputSchema,
+  type userPreferencesInputType,
 } from "@/zod-schemas/preferences";
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export const savePreferencesAction = actionClient
   .metadata({ actionName: "savePreferencesAction" })
-  .schema(insertUserPreferencesSchema, {
+  .schema(userPreferencesInputSchema, {
     handleValidationErrorsShape: async (ve) =>
       flattenValidationErrors(ve).fieldErrors,
   })
@@ -23,7 +25,7 @@ export const savePreferencesAction = actionClient
     async ({
       parsedInput: userPreference,
     }: {
-      parsedInput: insertUserPreferencesType;
+      parsedInput: userPreferencesInputType;
     }) => {
       const { getUser } = getKindeServerSession();
       const kindeUser = await getUser();
