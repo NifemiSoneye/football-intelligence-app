@@ -6,7 +6,12 @@ import { eq } from "drizzle-orm";
 import TeamPageClient from "./TeamPageClient";
 import { users } from "@/db/schema";
 
-export default async function TeamsPage() {
+export default async function TeamsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ leagues?: string }>;
+}) {
+  const { leagues } = await searchParams;
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
@@ -22,9 +27,7 @@ export default async function TeamsPage() {
     where: eq(userPreferences.userId, dbUser.id),
   });
 
-  if (!prefs?.favoriteLeaguesIds?.length) {
-    redirect("/onboarding/leagues");
-  }
+  if (!leagues) redirect("/onboarding/leagues");
   if (prefs?.favoriteTeamsIds?.length) {
     redirect("/dashboard");
   }

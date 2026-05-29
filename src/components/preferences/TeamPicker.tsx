@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Team } from "@/types/football";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   selectedLeagues: number[];
@@ -15,18 +16,30 @@ export default function TeamPicker({
   onChange,
 }: Props) {
   const [teams, setTeams] = useState<Team[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     if (selectedLeagues.length === 0) return;
+
+    setLoading(true);
 
     // fetch teams for each selected league
     Promise.all(
       selectedLeagues.map((id) =>
         fetch(`/api/teams?leagueId=${id}`).then((res) => res.json()),
       ),
-    ).then((results) => {
-      const allTeams = results.flatMap((r) => r.teams);
-      setTeams(allTeams);
-    });
+    )
+      .then((results) => {
+        const allTeams = results.flatMap((r) => r.teams);
+        const unique = [...new Map(allTeams.map((t) => [t.id, t])).values()];
+        setTeams(unique);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
   }, [selectedLeagues]);
   const handleClick = (id: number) => {
     if (selected.includes(id)) {
@@ -35,6 +48,19 @@ export default function TeamPicker({
       onChange([...selected, id]);
     }
   };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center py-20">
+        <Loader2 className="animate-spin text-[#e8ff47] w-8 h-8" />
+      </div>
+    );
+  if (error)
+    return (
+      <p className="text-center text-[#666] py-20">
+        Failed to load teams. Please go back and try again.
+      </p>
+    );
   return (
     <div className="grid grid-cols-3 gap-2.5">
       {teams.map((team) => (

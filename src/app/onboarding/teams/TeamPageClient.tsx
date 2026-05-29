@@ -66,7 +66,10 @@ export default function TeamPageClient() {
           <Button variant="outline" onClick={() => router.back()}>
             Back
           </Button>
-          <Button onClick={handleSubmit} disabled={isPending}>
+          <Button
+            onClick={handleSubmit}
+            disabled={isPending || selectedTeams.length === 0}
+          >
             {isPending ? "Saving..." : "Get Started"}
           </Button>
         </div>
