@@ -62,7 +62,7 @@ export default function TeamPicker({
       </p>
     );
   return (
-    <div className="grid grid-cols-3 gap-2.5">
+    <div className="grid grid-cols-3 gap-2.5 md:grid-cols-4">
       {teams.map((team) => (
         <div
           key={team.id}

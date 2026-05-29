@@ -18,7 +18,7 @@ export default function LeaguePicker({ selected, onChange }: Props) {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-2.5">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
       {LEAGUES.map((league) => (
         <div
           key={league.id}
