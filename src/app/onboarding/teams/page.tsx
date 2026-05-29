@@ -1,76 +1,33 @@
-"use client";
+import { redirect } from "next/navigation";
+import { db } from "@/db";
+import { userPreferences } from "@/db/schema";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { eq } from "drizzle-orm";
+import TeamPageClient from "./TeamPageClient";
+import { users } from "@/db/schema";
 
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useAction } from "next-safe-action/hooks";
-import TeamPicker from "@/components/preferences/TeamPicker";
-import { Button } from "@/components/ui/button";
-import { savePreferencesAction } from "@/app/actions/preferences-actions";
-import {
-  userPreferencesInputSchema,
-  type userPreferencesInputType,
-} from "@/zod-schemas/preferences";
-import StepIndicator from "@/components/preferences/StepIndicator";
+export default async function TeamsPage() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
 
-export default function TeamsPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [selectedTeams, setSelectedTeams] = useState<number[]>([]);
+  if (!user) redirect("/");
 
-  const selectedLeagues: number[] = JSON.parse(
-    searchParams.get("leagues") ?? "[]",
-  );
-
-  const { execute, isPending } = useAction(savePreferencesAction, {
-    onSuccess: () => router.push("/dashboard"),
-    onError: () => console.error("Failed to save preferences"),
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.kindeId, user.id),
   });
 
-  const handleSubmit = () => {
-    execute({
-      favoriteLeaguesIds: selectedLeagues,
-      favoriteTeamsIds: selectedTeams,
-    });
-  };
+  if (!dbUser) redirect("/");
 
-  return (
-    <div className="">
-      <StepIndicator step={2} />
-      <section className="mb-10">
-        <p className="text-[#e8ff47] text-[11px] font-semibold mb-2 tracking-[0.15em]">
-          STEP 2 OF 2
-        </p>
-        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold lg:text-[4.5rem]">
-          Pick your <br /> teams
-        </h1>
-        <p className="text-[15px] text-[#666] leading-[1.6]">
-          Choose the teams you want to follow across your selected leagues.
-        </p>
-      </section>
+  const prefs = await db.query.userPreferences.findFirst({
+    where: eq(userPreferences.userId, dbUser.id),
+  });
 
-      <TeamPicker
-        selectedLeagues={selectedLeagues}
-        selected={selectedTeams}
-        onChange={setSelectedTeams}
-      />
-      <div className="flex items-center justify-between mt-4">
-        <div>
-          <p className="text-[15px] text-[#666] leading-[1.6] flex gap-2 ">
-            <span className="text-[#e8ff47] font-display">
-              {selectedTeams.length}
-            </span>
-            teams selected
-          </p>
-        </div>
-        <div className="flex gap-4">
-          <Button variant="outline" onClick={() => router.back()}>
-            Back
-          </Button>
-          <Button onClick={handleSubmit} disabled={isPending}>
-            {isPending ? "Saving..." : "Get Started"}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+  if (!prefs?.favoriteLeaguesIds?.length) {
+    redirect("/onboarding/leagues");
+  }
+  if (prefs?.favoriteTeamsIds?.length) {
+    redirect("/dashboard");
+  }
+
+  return <TeamPageClient />;
 }

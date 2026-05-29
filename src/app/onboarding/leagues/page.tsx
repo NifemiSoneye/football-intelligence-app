@@ -1,54 +1,29 @@
-"use client";
+import { redirect } from "next/navigation";
+import { db } from "@/db";
+import { userPreferences } from "@/db/schema";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { eq } from "drizzle-orm";
+import LeaguePageClient from "./LeaguePageClient";
+import { users } from "@/db/schema";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import LeaguePicker from "@/components/preferences/LeaguePicker";
-import { Button } from "@/components/ui/button";
-import StepIndicator from "@/components/preferences/StepIndicator";
+export default async function LeaguesPage() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
 
-export default function LeaguesPage() {
-  const router = useRouter();
-  const [selectedLeagues, setSelectedLeagues] = useState<number[]>([]);
+  if (!user) redirect("/");
 
-  const handleNext = () => {
-    const params = new URLSearchParams();
-    params.set("leagues", JSON.stringify(selectedLeagues));
-    router.push(`/onboarding/teams?${params.toString()}`);
-  };
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.kindeId, user.id),
+  });
 
-  return (
-    <div className="">
-      <StepIndicator step={1} />
-      <section className="mb-10">
-        <p className="text-[#e8ff47] text-[11px] font-semibold mb-2 tracking-[0.15em]">
-          STEP 1 OF 2
-        </p>
-        <h1 className="uppercase text-white text-[2.8rem] leading-[0.95] mb-3 font-display tracking-[0.02em] font-semibold lg:text-[4.5rem]">
-          Choose your <br /> leagues
-        </h1>
-        <p className="text-[15px] text-[#666] leading-[1.6] lg:hidden">
-          Select the competitions you want to follow. You can always change
-          these later.
-        </p>
-        <p className="text-[15px] text-[#666] leading-[1.6] hidden lg:block">
-          Select the competitions you want to follow. You can always change{" "}
-          <br />
-          these later.
-        </p>
-      </section>
+  if (!dbUser) redirect("/");
 
-      <LeaguePicker selected={selectedLeagues} onChange={setSelectedLeagues} />
-      <div className="flex items-center justify-between mt-4 ">
-        <p className="text-[15px] text-[#666] leading-[1.6] flex gap-2 ">
-          <span className="text-[#e8ff47] font-display">
-            {selectedLeagues.length}
-          </span>
-          leagues selected
-        </p>
-        <Button onClick={handleNext} disabled={selectedLeagues.length === 0}>
-          Next
-        </Button>
-      </div>
-    </div>
-  );
+  const prefs = await db.query.userPreferences.findFirst({
+    where: eq(userPreferences.userId, dbUser.id),
+  });
+  if (prefs?.favoriteLeaguesIds?.length) {
+    redirect("/dashboard");
+  }
+
+  return <LeaguePageClient />;
 }
