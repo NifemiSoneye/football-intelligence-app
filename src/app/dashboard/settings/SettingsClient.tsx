@@ -59,8 +59,6 @@ export default function SettingsClient({
   };
   return (
     <div>
-      <Header />
-
       <section className="min-h-screen bg-[#0a0a0a] p-4 relative overflow-hidden">
         <h1 className="uppercase text-white text-[2rem] leading-[0.95] my-3 font-display tracking-[0.02em] font-semibold lg:text-[4.5rem] italic lg:not-italic">
           Account settings

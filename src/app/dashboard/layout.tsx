@@ -3,7 +3,9 @@ import { db } from "@/db";
 import { users, userPreferences } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-
+import { SidebarProvider } from "@/context/SidebarContext";
+import SideBar from "@/components/SideBar";
+import Header from "@/components/Header";
 export default async function DashboardLayout({
   children,
 }: {
@@ -41,5 +43,15 @@ export default async function DashboardLayout({
     });
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <SidebarProvider>
+        <Header />
+        <div className="flex min-h-screen bg-[#0a0a0a]">
+          <SideBar />
+          <main className="flex-1 ">{children}</main>
+        </div>
+      </SidebarProvider>
+    </>
+  );
 }
