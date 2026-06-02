@@ -17,9 +17,13 @@ const footballFetch = async (endpoint: string) => {
 
 export const getStandings = async (
   leagueId: number,
+  season?: number,
 ): Promise<StandingsResponse> => {
   try {
-    return await footballFetch(`/competitions/${leagueId}/standings`);
+    const params = new URLSearchParams();
+    if (season) params.set("season", String(season));
+    const query = season ? `?${params.toString()}` : "";
+    return await footballFetch(`/competitions/${leagueId}/standings${query}`);
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch standings for league ${leagueId}`);
@@ -29,8 +33,16 @@ export const getFixtures = async (
   leagueId: number,
 ): Promise<MatchesResponse> => {
   try {
+    const dateFrom = new Date();
+    const dateTo = new Date();
+    dateTo.setDate(dateFrom.getDate() + 14);
+    const params = new URLSearchParams({
+      status: "SCHEDULED",
+      dateFrom: dateFrom.toISOString().split("T")[0],
+      dateTo: dateTo.toISOString().split("T")[0],
+    });
     return await footballFetch(
-      `/competitions/${leagueId}/matches?status=SCHEDULED`,
+      `/competitions/${leagueId}/matches?${params.toString()}`,
     );
   } catch (err) {
     console.error(err);
@@ -42,7 +54,14 @@ export const getResults = async (
   season?: number,
 ): Promise<MatchesResponse> => {
   try {
-    const params = new URLSearchParams({ status: "FINISHED" });
+    const dateTo = new Date();
+    const dateFrom = new Date();
+    dateFrom.setDate(dateTo.getDate() - 60);
+    const params = new URLSearchParams({
+      status: "FINISHED",
+      dateFrom: dateFrom.toISOString().split("T")[0], // YYYY-MM-DD
+      dateTo: dateTo.toISOString().split("T")[0],
+    });
     if (season) params.set("season", String(season));
     return await footballFetch(
       `/competitions/${leagueId}/matches?${params.toString()}`,
