@@ -3,11 +3,13 @@ import { StandingsResponse } from "@/types/football";
 import { MatchesResponse } from "@/types/football";
 import { TeamInfoResponse, TeamsResponse } from "@/types/football";
 
-const footballFetch = async (endpoint: string) => {
+const footballFetch = async (endpoint: string, revalidate: number = 3600) => {
+  console.log(`Fetching: ${endpoint}`);
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     headers: {
       "X-Auth-Token": process.env.FOOTBALL_DATA_API_KEY!,
     },
+    next: { revalidate },
   });
   if (!response.ok) {
     throw new Error(`Football API error: ${response.status}`);
@@ -23,7 +25,10 @@ export const getStandings = async (
     const params = new URLSearchParams();
     if (season) params.set("season", String(season));
     const query = season ? `?${params.toString()}` : "";
-    return await footballFetch(`/competitions/${leagueId}/standings${query}`);
+    return await footballFetch(
+      `/competitions/${leagueId}/standings${query}`,
+      3600,
+    );
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch standings for league ${leagueId}`);
@@ -43,6 +48,7 @@ export const getFixtures = async (
     });
     return await footballFetch(
       `/competitions/${leagueId}/matches?${params.toString()}`,
+      3600,
     );
   } catch (err) {
     console.error(err);
@@ -65,6 +71,7 @@ export const getResults = async (
     if (season) params.set("season", String(season));
     return await footballFetch(
       `/competitions/${leagueId}/matches?${params.toString()}`,
+      1800,
     );
   } catch (err) {
     console.error(err);
@@ -75,7 +82,7 @@ export const getTeamInfo = async (
   teamId: number,
 ): Promise<TeamInfoResponse> => {
   try {
-    return await footballFetch(`/teams/${teamId}`);
+    return await footballFetch(`/teams/${teamId}`, 86400);
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch info for team ${teamId}`);
@@ -85,7 +92,10 @@ export const getTeamFixtures = async (
   teamId: number,
 ): Promise<MatchesResponse> => {
   try {
-    return await footballFetch(`/teams/${teamId}/matches?status=SCHEDULED`);
+    return await footballFetch(
+      `/teams/${teamId}/matches?status=SCHEDULED`,
+      3600,
+    );
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch fixtures for team ${teamId}`);
@@ -98,7 +108,10 @@ export const getTeamResults = async (
   try {
     const params = new URLSearchParams({ status: "FINISHED" });
     if (season) params.set("season", String(season));
-    return await footballFetch(`/teams/${teamId}/matches?${params.toString()}`);
+    return await footballFetch(
+      `/teams/${teamId}/matches?${params.toString()}`,
+      1800,
+    );
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch fixtures for team ${teamId}`);
@@ -109,7 +122,7 @@ export const getLeagueTeams = async (
   leagueId: number,
 ): Promise<TeamsResponse> => {
   try {
-    return await footballFetch(`/competitions/${leagueId}/teams`);
+    return await footballFetch(`/competitions/${leagueId}/teams`, 86400);
   } catch (err) {
     console.error(err);
     throw new Error(`Failed to fetch teams for league ${leagueId}`);

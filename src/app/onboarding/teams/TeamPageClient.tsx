@@ -11,8 +11,9 @@ import {
   type userPreferencesInputType,
 } from "@/zod-schemas/preferences";
 import StepIndicator from "@/components/preferences/StepIndicator";
+import { Suspense } from "react";
 
-export default function TeamPageClient() {
+function TeamPageClientInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedTeams, setSelectedTeams] = useState<number[]>([]);
@@ -75,5 +76,13 @@ export default function TeamPageClient() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TeamPageClient() {
+  return (
+    <Suspense fallback={null}>
+      <TeamPageClientInner />
+    </Suspense>
   );
 }

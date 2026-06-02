@@ -1,12 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function OnboardingLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function OnboardingLayoutInner({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const hasLeagues = searchParams.has("leagues");
   return (
@@ -43,5 +40,17 @@ export default function OnboardingLayout({
       />
       <div className="max-w-[900px] mx-auto relative z-[100]">{children}</div>
     </div>
+  );
+}
+
+export default function OnboardingLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <OnboardingLayoutInner>{children}</OnboardingLayoutInner>
+    </Suspense>
   );
 }
