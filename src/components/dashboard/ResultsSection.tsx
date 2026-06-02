@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function ResultsSection({ results }: Props) {
-  const ITEMS_PER_PAGE = 2;
+  const ITEMS_PER_PAGE = 3;
 
   const [page, setPage] = useState(0);
 
@@ -36,7 +36,7 @@ export default function ResultsSection({ results }: Props) {
     <>
       <div className="m-3">
         <div className="flex justify-between items-center my-2">
-          <p className="uppercase text-[1.5rem] text-white font-display ">
+          <p className="uppercase text-[1.5rem] text-white font-display lg:text-[3rem] md:text-[2rem]  ">
             Recent Results
           </p>
 
@@ -60,7 +60,7 @@ export default function ResultsSection({ results }: Props) {
         </div>
         {results.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
               {paginatedResults.map((match) => (
                 <MatchCard key={match.id} Match={match} variant="result" />
               ))}
@@ -71,7 +71,7 @@ export default function ResultsSection({ results }: Props) {
             </div>
           </>
         ) : (
-          <div className="text-3xl text-center text-white font-display">
+          <div className="text-[1.2rem] lg:text-[2rem] md:text-[1.5rem] text-center text-white font-display">
             No recent results available
           </div>
         )}

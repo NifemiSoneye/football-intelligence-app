@@ -35,7 +35,7 @@ export default function FixturesSection({ fixtures }: Props) {
   return (
     <div className="m-3">
       <div className="flex justify-between items-center my-2">
-        <p className="uppercase text-[1.5rem] text-white font-display ">
+        <p className="uppercase text-[1.5rem] text-white font-display lg:text-[3rem] md:text-[2rem]">
           Upcoming Fixtures
         </p>
 
@@ -59,7 +59,7 @@ export default function FixturesSection({ fixtures }: Props) {
       </div>
       {fixtures.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-2 ">
             {paginatedFixtures.map((match) => (
               <MatchCard key={match.id} Match={match} variant="fixture" />
             ))}
@@ -70,7 +70,7 @@ export default function FixturesSection({ fixtures }: Props) {
           </div>
         </>
       ) : (
-        <div className="text-3xl text-center text-white font-display">
+        <div className="text-[1.2rem] lg:text-[2rem] md:text-[1.5rem] text-center text-white font-display">
           No upcoming fixtures available
         </div>
       )}
