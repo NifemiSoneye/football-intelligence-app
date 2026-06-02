@@ -62,6 +62,7 @@ export default function ResultsSection({ results }: Props) {
           <MatchCard key={Match.id} Match={Match} variant="result" />
         ))}
       </div>
+      <div className="text-[#e8ff47] text-center mt-3">View All Results</div>
     </div>
   );
 }

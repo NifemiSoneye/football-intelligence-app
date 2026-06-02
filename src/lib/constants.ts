@@ -35,4 +35,10 @@ export const LEAGUES = [
     crest: "https://crests.football-data.org/CL.png",
     region: "Europe",
   },
+  {
+    id: 2000,
+    name: "FIFA World Cup",
+    crest: "https://crests.football-data.org/qatar.png", // fallback crest used often
+    region: "International",
+  },
 ];
