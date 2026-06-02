@@ -1,3 +1,4 @@
+"use client";
 import { Match } from "@/types/football";
 import Image from "next/image";
 
@@ -24,7 +25,7 @@ export default function MatchCard({ Match, variant }: Prop) {
           className="object-contain"
         />
         <p
-          className={`font-semibold text-center  text-[13px] leading-[1.3] mt-3 transition-colors border-b-2 text-white ${Match.score.winner === "HOME_TEAM" ? "text-[#e8ff47] border-[#e8ff47]" : Match.score.winner === "DRAW" ? "text-white border-white/30" : Match.score.winner === "AWAY_TEAM" ? "border-red-600" : "border-transparent"}`}
+          className={`font-semibold text-center  text-[13px] leading-[1.3] mt-3 transition-colors border-b-2 text-white ${Match.score.winner === "HOME_TEAM" ? " border-[#e8ff47]" : Match.score.winner === "DRAW" ? "text-white border-white/30" : Match.score.winner === "AWAY_TEAM" ? "border-red-600" : "border-transparent"}`}
         >
           {Match.homeTeam.tla}
         </p>
@@ -57,7 +58,7 @@ export default function MatchCard({ Match, variant }: Prop) {
           className="object-contain"
         />
         <p
-          className={`font-semibold text-center  text-[13px] leading-[1.3] mt-3 transition-colors border-b-2 text-white ${Match.score.winner === "AWAY_TEAM" ? "text-[#e8ff47] border-[#e8ff47]" : Match.score.winner === "HOME_TEAM" ? "border-red-600" : Match.score.winner === "DRAW" ? "text-white border-white/30" : "border-transparent"}`}
+          className={`font-semibold text-center  text-[13px] leading-[1.3] mt-3 transition-colors border-b-2 text-white ${Match.score.winner === "AWAY_TEAM" ? " border-[#e8ff47]" : Match.score.winner === "HOME_TEAM" ? "border-red-600" : Match.score.winner === "DRAW" ? "text-white border-white/30" : "border-transparent"}`}
         >
           {Match.awayTeam.tla}
         </p>

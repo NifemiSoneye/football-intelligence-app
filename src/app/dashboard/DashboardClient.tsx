@@ -20,7 +20,9 @@ export default function DashboardClient({
   leagueIds,
   favoriteTeamIds,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<number | null>(
+    leagueIds[0] ?? null,
+  );
   const tabs = leagueIds.map((id) => {
     const league = LEAGUES.find((l) => l.id === id);
     return {
@@ -46,11 +48,6 @@ export default function DashboardClient({
             favoriteTeamIds.includes(match.awayTeam.id)),
       )
     : results;
-  useEffect(() => {
-    if (leagueIds.length && activeTab === null) {
-      setActiveTab(leagueIds[0]);
-    }
-  }, [leagueIds]);
   return (
     <>
       <div className="flex border-b border-[#292c33]">

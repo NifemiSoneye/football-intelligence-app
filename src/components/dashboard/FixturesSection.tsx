@@ -1,3 +1,4 @@
+"use client";
 import { Match } from "@/types/football";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
