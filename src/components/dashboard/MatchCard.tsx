@@ -41,9 +41,9 @@ export default function MatchCard({ Match, variant }: Prop) {
             <div className="text-white">{formatDate(Match.utcDate)}</div>
           </div>
         ) : (
-          <div>
+          <div className="flex flex-col items-center font-display">
             <div className="text-[#e8ff47]">VS</div>
-            <div>{formatDate(Match.utcDate)}</div>
+            <div className="text-white">{formatDate(Match.utcDate)}</div>
           </div>
         )}
       </div>

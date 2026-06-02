@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { Competition } from "@/types/football";
 import { LEAGUES } from "@/lib/constants";
 import ResultsSection from "@/components/dashboard/ResultsSection";
-
+import FixturesSection from "@/components/dashboard/FixturesSection";
+import Image from "next/image";
 type Props = {
   fixtures: Match[];
   results: Match[];
@@ -25,10 +26,16 @@ export default function DashboardClient({
     return {
       id,
       label: league?.name ?? `League ${id}`,
+      crest: league?.crest ?? `League ${id}`,
     };
   });
   const filteredFixtures = activeTab
-    ? fixtures.filter((match) => match.competition.id === activeTab)
+    ? fixtures.filter(
+        (match) =>
+          match.competition.id === activeTab &&
+          (favoriteTeamIds.includes(match.homeTeam.id) ||
+            favoriteTeamIds.includes(match.awayTeam.id)),
+      )
     : fixtures;
 
   const filteredResults = activeTab
@@ -51,21 +58,26 @@ export default function DashboardClient({
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 text-[0.78rem] font-medium border-b-2 transition-colors
+            className={`flex-1 flex items-center justify-center gap-5 py-3 text-[0.78rem] font-medium border-b-2 transition-colors
               ${
                 activeTab === tab.id
                   ? "text-white border-[#C9A84C]"
                   : "text-[#8A93A8] border-transparent"
               }`}
           >
-            <div
-              className={`w-2 h-2  rounded-[50%] ${tab.id === activeTab ? "bg-[#f6b443]" : "bg-[#8A93A8]"}`}
-            ></div>
+            <Image
+              src={tab.crest}
+              alt={tab.label}
+              width={30}
+              height={30}
+              className="object-contain"
+            />
             {tab.label}
           </button>
         ))}
       </div>
       <ResultsSection results={filteredResults} />
+      <FixturesSection fixtures={filteredFixtures} />
     </>
   );
 }

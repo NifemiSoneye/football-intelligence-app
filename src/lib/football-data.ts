@@ -35,7 +35,7 @@ export const getFixtures = async (
   try {
     const dateFrom = new Date();
     const dateTo = new Date();
-    dateTo.setDate(dateFrom.getDate() + 14);
+    dateTo.setDate(dateFrom.getDate() + 90);
     const params = new URLSearchParams({
       status: "SCHEDULED",
       dateFrom: dateFrom.toISOString().split("T")[0],
@@ -56,7 +56,7 @@ export const getResults = async (
   try {
     const dateTo = new Date();
     const dateFrom = new Date();
-    dateFrom.setDate(dateTo.getDate() - 60);
+    dateFrom.setDate(dateTo.getDate() - 90);
     const params = new URLSearchParams({
       status: "FINISHED",
       dateFrom: dateFrom.toISOString().split("T")[0], // YYYY-MM-DD

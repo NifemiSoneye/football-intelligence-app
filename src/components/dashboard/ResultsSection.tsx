@@ -33,36 +33,49 @@ export default function ResultsSection({ results }: Props) {
     setPage(0);
   }, [results]);
   return (
-    <div className="m-3">
-      <div className="flex justify-between items-center my-2">
-        <p className="uppercase text-[1.5rem] text-white font-display ">
-          Recent Results
-        </p>
+    <>
+      <div className="m-3">
+        <div className="flex justify-between items-center my-2">
+          <p className="uppercase text-[1.5rem] text-white font-display ">
+            Recent Results
+          </p>
 
-        <div className="flex items-center justify-between gap-2">
-          <Button
-            onClick={prevPage}
-            disabled={page === 0}
-            className="text-white disabled:opacity-30 rounded-sm"
-          >
-            <ChevronLeft />
-          </Button>
+          <div className="flex items-center justify-between gap-2">
+            <Button
+              onClick={prevPage}
+              disabled={page === 0}
+              className="text-white disabled:opacity-30 rounded-sm"
+            >
+              <ChevronLeft />
+            </Button>
 
-          <Button
-            onClick={nextPage}
-            disabled={page >= Math.ceil(results.length / ITEMS_PER_PAGE) - 1}
-            className="text-white disabled:opacity-30 rounded-sm"
-          >
-            <ChevronRight />
-          </Button>
+            <Button
+              onClick={nextPage}
+              disabled={page >= Math.ceil(results.length / ITEMS_PER_PAGE) - 1}
+              className="text-white disabled:opacity-30 rounded-sm"
+            >
+              <ChevronRight />
+            </Button>
+          </div>
         </div>
+        {results.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 gap-2">
+              {paginatedResults.map((match) => (
+                <MatchCard key={match.id} Match={match} variant="result" />
+              ))}
+            </div>
+
+            <div className="text-[#e8ff47] text-center mt-3">
+              View All Results
+            </div>
+          </>
+        ) : (
+          <div className="text-3xl text-center text-white font-display">
+            No recent results available
+          </div>
+        )}
       </div>
-      <div className="grid grid-cols-1 gap-2">
-        {paginatedResults.map((Match) => (
-          <MatchCard key={Match.id} Match={Match} variant="result" />
-        ))}
-      </div>
-      <div className="text-[#e8ff47] text-center mt-3">View All Results</div>
-    </div>
+    </>
   );
 }
