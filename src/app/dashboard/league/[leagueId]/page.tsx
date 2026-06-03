@@ -38,7 +38,7 @@ export default async function LeaguePage({ params }: Props) {
     <LeagueClient
       fixtures={fixturesData.matches}
       results={resultsData.matches}
-      standings={standingsData.standings[0].table}
+      standings={standingsData}
     />
   );
 }
