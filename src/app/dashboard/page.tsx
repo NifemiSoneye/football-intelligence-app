@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { userPreferences, users } from "@/db/schema";
@@ -24,9 +25,21 @@ export default async function DashboardPage() {
   const leagueIds = prefs?.favoriteLeaguesIds ?? [];
   const favoriteTeamIds = prefs?.favoriteTeamsIds ?? [];
 
+  const getCachedFixtures = unstable_cache(
+    async (leagueId: number) => getFixtures(leagueId),
+    ["fixtures"],
+    { revalidate: 3600 },
+  );
+
+  const getCachedResults = unstable_cache(
+    async (leagueId: number) => getResults(leagueId),
+    ["results"],
+    { revalidate: 1800 },
+  );
+
   const [fixturesData, resultsData] = await Promise.all([
-    Promise.all(leagueIds.map((id) => getFixtures(id))),
-    Promise.all(leagueIds.map((id) => getResults(id))),
+    Promise.all(leagueIds.map((id) => getCachedFixtures(id))),
+    Promise.all(leagueIds.map((id) => getCachedResults(id))),
   ]);
 
   const fixtures = fixturesData.flatMap((r) => r.matches);

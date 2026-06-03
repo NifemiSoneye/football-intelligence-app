@@ -1,5 +1,12 @@
 import { getLeagueTeams } from "@/lib/football-data";
 import { NextRequest, NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
+
+const getCachedTeams = unstable_cache(
+  async (leagueId: number) => getLeagueTeams(leagueId),
+  ["teams"],
+  { revalidate: 86400 },
+);
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -13,7 +20,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const data = await getLeagueTeams(Number(leagueId));
+    const data = await getCachedTeams(Number(leagueId));
     return NextResponse.json(data);
   } catch (err) {
     return NextResponse.json(
