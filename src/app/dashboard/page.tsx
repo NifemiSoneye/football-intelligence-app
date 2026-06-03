@@ -6,6 +6,10 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { eq } from "drizzle-orm";
 import { getFixtures, getResults } from "@/lib/football-data";
 import DashboardClient from "./DashboardClient";
+import {
+  getCachedFixtures,
+  getCachedResults,
+} from "@/lib/cached-football-data";
 
 export default async function DashboardPage() {
   const { getUser } = getKindeServerSession();
@@ -24,18 +28,6 @@ export default async function DashboardPage() {
 
   const leagueIds = prefs?.favoriteLeaguesIds ?? [];
   const favoriteTeamIds = prefs?.favoriteTeamsIds ?? [];
-
-  const getCachedFixtures = unstable_cache(
-    async (leagueId: number) => getFixtures(leagueId),
-    ["fixtures"],
-    { revalidate: 3600 },
-  );
-
-  const getCachedResults = unstable_cache(
-    async (leagueId: number) => getResults(leagueId),
-    ["results"],
-    { revalidate: 1800 },
-  );
 
   const [fixturesData, resultsData] = await Promise.all([
     Promise.all(leagueIds.map((id) => getCachedFixtures(id))),

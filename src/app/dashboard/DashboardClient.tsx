@@ -50,7 +50,7 @@ export default function DashboardClient({
     : results;
   return (
     <>
-      <div className="flex border-b border-[#292c33]">
+      <div className="flex border-b border-[#292c33] gap-2">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -67,7 +67,7 @@ export default function DashboardClient({
               alt={tab.label}
               width={30}
               height={30}
-              className="object-contain"
+              className="object-contain hidden md:block"
             />
             {tab.label}
           </button>

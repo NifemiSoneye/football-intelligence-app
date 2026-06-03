@@ -39,7 +39,6 @@ export default function FixturesSection({ fixtures }: Props) {
         <p className="uppercase text-[1.5rem] text-white font-display lg:text-[3rem] md:text-[2rem]">
           Upcoming Fixtures
         </p>
-
         <div className="flex items-center justify-between gap-2">
           <Button
             onClick={prevPage}
