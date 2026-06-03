@@ -50,3 +50,9 @@ export const getCachedTeamResults = unstable_cache(
   ["team-results"],
   { revalidate: 1800 },
 );
+
+export const getCachedLeagueResults = unstable_cache(
+  async (id: number, season?: number) => getResults(id, season),
+  ["league-results"],
+  { revalidate: 1800 },
+);

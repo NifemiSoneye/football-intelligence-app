@@ -5,6 +5,7 @@ import StandingsTable from "@/components/leagues/StandingsTable";
 import { StandingsResponse } from "@/types/football";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import LeagueResults from "./LeagueResults";
 type Props = {
   fixtures: Match[];
   results: Match[];
@@ -72,7 +73,7 @@ export default function LeagueClient({ fixtures, results, standings }: Props) {
       {activeTab === "standings" && (
         <StandingsTable standings={standings.standings[0].table} />
       )}
-      ;
+      {activeTab === "results" && <LeagueResults results={results} />};
     </>
   );
 }

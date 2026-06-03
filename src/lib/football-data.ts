@@ -4,6 +4,7 @@ import { MatchesResponse } from "@/types/football";
 import { TeamInfoResponse, TeamsResponse } from "@/types/football";
 
 const footballFetch = async (endpoint: string, revalidate: number = 3600) => {
+  console.log(`Fetching: ${BASE_URL}${endpoint}`);
   console.log(`Fetching: ${endpoint}`);
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     headers: {
@@ -58,17 +59,21 @@ export const getFixtures = async (
 export const getResults = async (
   leagueId: number,
   season?: number,
+  days: number = 90,
 ): Promise<MatchesResponse> => {
   try {
-    const dateTo = new Date();
-    const dateFrom = new Date();
-    dateFrom.setDate(dateTo.getDate() - 90);
-    const params = new URLSearchParams({
-      status: "FINISHED",
-      dateFrom: dateFrom.toISOString().split("T")[0], // YYYY-MM-DD
-      dateTo: dateTo.toISOString().split("T")[0],
-    });
-    if (season) params.set("season", String(season));
+    const params = new URLSearchParams({ status: "FINISHED" });
+
+    if (season) {
+      params.set("season", String(season));
+    } else {
+      const dateTo = new Date();
+      const dateFrom = new Date();
+      dateFrom.setDate(dateTo.getDate() - days);
+      params.set("dateFrom", dateFrom.toISOString().split("T")[0]);
+      params.set("dateTo", dateTo.toISOString().split("T")[0]);
+    }
+
     return await footballFetch(
       `/competitions/${leagueId}/matches?${params.toString()}`,
       1800,
