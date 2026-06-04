@@ -18,8 +18,8 @@ export default function MatchCard({ Match, variant }: Prop) {
     <div className="bg-[#131313] flex items-center justify-evenly p-4 rounded-md border border-[#292c33] ">
       <div className="flex flex-col items-center">
         <Image
-          src={Match.homeTeam.crest}
-          alt={Match.homeTeam.name}
+          src={Match.homeTeam.crest || "/placeholder-crest.svg"}
+          alt={Match.homeTeam.name || "TBD"}
           width={40}
           height={40}
           className="object-contain"
@@ -27,7 +27,7 @@ export default function MatchCard({ Match, variant }: Prop) {
         <p
           className={`font-semibold text-center  text-[13px] leading-[1.3] mt-3 transition-colors border-b-2 text-white ${Match.score.winner === "HOME_TEAM" ? " border-[#e8ff47]" : Match.score.winner === "DRAW" ? "text-white border-white/30" : Match.score.winner === "AWAY_TEAM" ? "border-red-600" : "border-transparent"}`}
         >
-          {Match.homeTeam.tla}
+          {Match.homeTeam.tla || "TBD"}
         </p>
       </div>
 
@@ -51,8 +51,8 @@ export default function MatchCard({ Match, variant }: Prop) {
 
       <div className="flex flex-col items-center">
         <Image
-          src={Match.awayTeam.crest}
-          alt={Match.awayTeam.name}
+          src={Match.awayTeam.crest || "/placeholder-crest.svg"}
+          alt={Match.awayTeam.name || "TBD"}
           width={40}
           height={40}
           className="object-contain"
@@ -60,7 +60,7 @@ export default function MatchCard({ Match, variant }: Prop) {
         <p
           className={`font-semibold text-center  text-[13px] leading-[1.3] mt-3 transition-colors border-b-2 text-white ${Match.score.winner === "AWAY_TEAM" ? " border-[#e8ff47]" : Match.score.winner === "HOME_TEAM" ? "border-red-600" : Match.score.winner === "DRAW" ? "text-white border-white/30" : "border-transparent"}`}
         >
-          {Match.awayTeam.tla}
+          {Match.awayTeam.tla || "TBD"}
         </p>
       </div>
     </div>

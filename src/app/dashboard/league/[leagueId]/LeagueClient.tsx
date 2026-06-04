@@ -6,6 +6,7 @@ import { StandingsResponse } from "@/types/football";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import LeagueResults from "./LeagueResults";
+import LeagueFixtures from "./LeagueFixtures";
 type Props = {
   fixtures: Match[];
   results: Match[];
@@ -57,7 +58,7 @@ export default function LeagueClient({ fixtures, results, standings }: Props) {
           className="md:hidden"
         />
         <div className="">
-          <h1 className="uppercase text-[0.75rem] text-white font-display lg:text-[1.5rem] md:text-[1rem]">
+          <h1 className="uppercase text-[1rem] text-white font-display lg:text-[1.5rem] md:text-[1rem]">
             {standings.competition.name}
           </h1>
           <div className="flex items-center gap-3">
@@ -71,10 +72,21 @@ export default function LeagueClient({ fixtures, results, standings }: Props) {
         </div>
       </div>
       {activeTab === "standings" && (
-        <StandingsTable standings={standings.standings[0].table} />
+        <>
+          {standings.standings.map((group) => (
+            <div key={group.group ?? group.type}>
+              {standings.standings.length > 1 && (
+                <p className="text-white font-display uppercase my-2 text-[1.2rem]">
+                  {group.group ?? group.type}
+                </p>
+              )}
+              <StandingsTable standings={group.table} />
+            </div>
+          ))}
+        </>
       )}
       {activeTab === "results" && <LeagueResults results={results} />};
-      {activeTab === "fixtures" && <LeagueResults results={results} />};
+      {activeTab === "fixtures" && <LeagueFixtures fixtures={fixtures} />};
     </>
   );
 }
