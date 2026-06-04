@@ -37,16 +37,22 @@ export const getStandings = async (
 };
 export const getFixtures = async (
   leagueId: number,
+  season?: number,
+  days: number = 90,
 ): Promise<MatchesResponse> => {
   try {
-    const dateFrom = new Date();
-    const dateTo = new Date();
-    dateTo.setDate(dateFrom.getDate() + 90);
-    const params = new URLSearchParams({
-      status: "SCHEDULED",
-      dateFrom: dateFrom.toISOString().split("T")[0],
-      dateTo: dateTo.toISOString().split("T")[0],
-    });
+    const params = new URLSearchParams({ status: "SCHEDULED" });
+
+    if (season) {
+      params.set("season", String(season));
+    } else {
+      const dateFrom = new Date();
+      const dateTo = new Date();
+      dateTo.setDate(dateFrom.getDate() + days);
+      params.set("dateFrom", dateFrom.toISOString().split("T")[0]);
+      params.set("dateTo", dateTo.toISOString().split("T")[0]);
+    }
+
     return await footballFetch(
       `/competitions/${leagueId}/matches?${params.toString()}`,
       3600,

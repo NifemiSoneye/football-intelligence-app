@@ -56,3 +56,9 @@ export const getCachedLeagueResults = unstable_cache(
   ["league-results"],
   { revalidate: 1800 },
 );
+
+export const getCachedLeagueFixtures = unstable_cache(
+  async (id: number, season?: number) => getFixtures(id, season),
+  ["league-fixtures"],
+  { revalidate: 3600 },
+);

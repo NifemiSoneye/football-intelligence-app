@@ -7,7 +7,7 @@ type Props = {
   results: Match[];
 };
 export default function LeagueResults({ results }: Props) {
-  const KNOCKOUT_STAGES = [
+  const KNOCKOUT_STAGE_ORDER = [
     "PLAYOFFS",
     "LAST_16",
     "QUARTER_FINALS",
@@ -19,7 +19,7 @@ export default function LeagueResults({ results }: Props) {
   ): Record<string | number, Match[]> => {
     return matches.reduce(
       (acc, match) => {
-        const key = KNOCKOUT_STAGES.includes(match.stage)
+        const key = KNOCKOUT_STAGE_ORDER.includes(match.stage)
           ? match.stage
           : (match.matchday ?? match.stage);
         if (!acc[key]) acc[key] = [];
@@ -30,16 +30,32 @@ export default function LeagueResults({ results }: Props) {
     );
   };
   const groupedResults = groupByMatchday(results);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const matchdays = Object.keys(groupedResults).sort((a, b) => {
     const aNum = Number(a);
     const bNum = Number(b);
+
+    // both are matchday numbers
     if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
-    return a.localeCompare(b);
+
+    // both are knockout stages
+    if (isNaN(aNum) && isNaN(bNum)) {
+      return KNOCKOUT_STAGE_ORDER.indexOf(a) - KNOCKOUT_STAGE_ORDER.indexOf(b);
+    }
+
+    // numbers come before knockout stages
+    return isNaN(aNum) ? 1 : -1;
   });
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const currentMatchday = matchdays[currentIndex];
   const currentResults = groupedResults[currentMatchday];
+  if (!results.length) {
+    return (
+      <div className="text-[1.2rem] lg:text-[2rem] md:text-[1.5rem] text-center text-white font-display m-3">
+        No recent results available
+      </div>
+    );
+  }
   return (
     <div className="m-3">
       <div className="flex justify-between items-center my-2">
@@ -67,17 +83,11 @@ export default function LeagueResults({ results }: Props) {
           </Button>
         </div>
       </div>
-      {results.length ? (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3 ">
-          {currentResults.map((match) => (
-            <MatchCard key={match.id} Match={match} variant="result" />
-          ))}
-        </div>
-      ) : (
-        <div className="text-[1.2rem] lg:text-[2rem] md:text-[1.5rem] text-center text-white font-display">
-          No recent results available
-        </div>
-      )}
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+        {currentResults.map((match) => (
+          <MatchCard key={match.id} Match={match} variant="result" />
+        ))}
+      </div>
     </div>
   );
 }

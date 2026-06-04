@@ -4,7 +4,7 @@ import { userPreferences, users } from "@/db/schema";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { eq } from "drizzle-orm";
 import {
-  getCachedFixtures,
+  getCachedLeagueFixtures,
   getCachedLeagueResults,
   getCachedStandings,
 } from "@/lib/cached-football-data";
@@ -32,7 +32,7 @@ export default async function LeaguePage({ params }: Props) {
   const currentSeason = new Date(standingsData.season.startDate).getFullYear();
 
   const [fixturesData, resultsData] = await Promise.all([
-    getCachedFixtures(id),
+    getCachedLeagueFixtures(id, currentSeason),
     getCachedLeagueResults(id, currentSeason),
   ]);
 

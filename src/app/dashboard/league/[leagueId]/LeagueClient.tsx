@@ -74,6 +74,7 @@ export default function LeagueClient({ fixtures, results, standings }: Props) {
         <StandingsTable standings={standings.standings[0].table} />
       )}
       {activeTab === "results" && <LeagueResults results={results} />};
+      {activeTab === "fixtures" && <LeagueResults results={results} />};
     </>
   );
 }
