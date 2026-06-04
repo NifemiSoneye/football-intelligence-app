@@ -43,12 +43,25 @@ export default async function DashboardLayout({
     });
   }
 
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.kindeId, kindeUser.id),
+  });
+
+  if (!dbUser) redirect("/");
+
+  const prefs = await db.query.userPreferences.findFirst({
+    where: eq(userPreferences.userId, dbUser.id),
+  });
+
+  const leagueIds = prefs?.favoriteLeaguesIds ?? [];
+  const favoriteTeamIds = prefs?.favoriteTeamsIds ?? [];
+
   return (
     <>
       <SidebarProvider>
         <Header />
         <div className="flex min-h-screen bg-[#0a0a0a]">
-          <SideBar />
+          <SideBar leagueIds={leagueIds} />
           <main className="flex-1 ">{children}</main>
         </div>
       </SidebarProvider>

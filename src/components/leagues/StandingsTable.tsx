@@ -47,8 +47,6 @@ export default function StandingsTable({ standings }: Props) {
             <tr
               key={row.team.id}
               className={`border-b border-[#292c33] hover:bg-[#ffffff05] transition-colors
-    ${row.position <= 4 ? "border-l-2 border-l-green-500" : ""}
-    ${row.position >= 18 ? "border-l-2 border-l-red-500" : ""}
   `}
             >
               <td className="py-3 px-2 text-white text-sm">{row.position}</td>

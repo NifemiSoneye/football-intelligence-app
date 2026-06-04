@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function FixturesSection({ fixtures }: Props) {
-  const ITEMS_PER_PAGE = 2;
+  const ITEMS_PER_PAGE = 3;
 
   const [page, setPage] = useState(0);
 
@@ -59,7 +59,7 @@ export default function FixturesSection({ fixtures }: Props) {
       </div>
       {fixtures.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 gap-2 ">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 ">
             {paginatedFixtures.map((match) => (
               <MatchCard key={match.id} Match={match} variant="fixture" />
             ))}

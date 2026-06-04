@@ -76,7 +76,7 @@ export default function LeagueClient({ fixtures, results, standings }: Props) {
           {standings.standings.map((group) => (
             <div key={group.group ?? group.type}>
               {standings.standings.length > 1 && (
-                <p className="text-white font-display uppercase my-2 text-[1.2rem]">
+                <p className="text-white font-display uppercase m-2 text-[1.2rem]">
                   {group.group ?? group.type}
                 </p>
               )}
