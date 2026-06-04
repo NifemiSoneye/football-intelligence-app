@@ -67,7 +67,7 @@ export default function FixturesSection({ fixtures, id }: Props) {
           </div>
 
           <Link
-            href={`/dashboard/league/${id}?tab=results`}
+            href={`/dashboard/league/${id}?tab=fixtures`}
             className="text-[#e8ff47] text-center mt-3 block"
           >
             View All Fixtures

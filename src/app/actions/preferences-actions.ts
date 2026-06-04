@@ -12,6 +12,7 @@ import {
   userPreferencesInputSchema,
   type userPreferencesInputType,
 } from "@/zod-schemas/preferences";
+import { revalidatePath } from "next/cache";
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -50,6 +51,7 @@ export const savePreferencesAction = actionClient
             updatedAt: new Date(),
           })
           .where(eq(userPreferences.id, existing.id));
+        revalidatePath("/dashboard", "layout");
         return {
           message: "User Preferences updated successfully",
         };
