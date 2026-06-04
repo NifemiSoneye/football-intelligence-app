@@ -5,11 +5,13 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { useEffect } from "react";
+import Link from "next/link";
 type Props = {
   results: Match[];
+  id: number | null;
 };
 
-export default function ResultsSection({ results }: Props) {
+export default function ResultsSection({ results, id }: Props) {
   const ITEMS_PER_PAGE = 3;
 
   const [page, setPage] = useState(0);
@@ -67,9 +69,12 @@ export default function ResultsSection({ results }: Props) {
               ))}
             </div>
 
-            <div className="text-[#e8ff47] text-center mt-3">
+            <Link
+              href={`/dashboard/league/${id}?tab=results`}
+              className="text-[#e8ff47] text-center mt-3 block"
+            >
               View All Results
-            </div>
+            </Link>
           </>
         ) : (
           <div className="text-[1.2rem] lg:text-[2rem] md:text-[1.5rem] text-center text-white font-display">

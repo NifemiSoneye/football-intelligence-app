@@ -67,7 +67,7 @@ export default function SideBar({ leagueIds }: Props) {
             Leagues {dropdownOpen ? <ChevronUp /> : <ChevronDown />}
           </button>
           {dropdownOpen && (
-            <div>
+            <div className="mx-3">
               {leagueIds.map((id) => {
                 const league = LEAGUES.find((l) => l.id === id);
                 if (!league) return null;
@@ -79,7 +79,7 @@ export default function SideBar({ leagueIds }: Props) {
                       setDropdownOpen(!dropdownOpen);
                       toggle();
                     }}
-                    className={`flex items-center gap-3 p-3 ${pathname === `/dashboard/league/${id}` ? "text-[#e8ff47] after:opacity-100 font-semibold " : "text-white"}`}
+                    className={`flex items-center gap-3 p-3  text-[13px] ${pathname === `/dashboard/league/${id}` ? "text-[#e8ff47] after:opacity-100 font-semibold " : "text-white"}`}
                   >
                     <Image
                       src={league.crest}

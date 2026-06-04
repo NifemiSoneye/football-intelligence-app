@@ -73,8 +73,8 @@ export default function DashboardClient({
           </button>
         ))}
       </div>
-      <ResultsSection results={filteredResults} />
-      <FixturesSection fixtures={filteredFixtures} />
+      <ResultsSection results={filteredResults} id={activeTab} />
+      <FixturesSection fixtures={filteredFixtures} id={activeTab} />
     </>
   );
 }
