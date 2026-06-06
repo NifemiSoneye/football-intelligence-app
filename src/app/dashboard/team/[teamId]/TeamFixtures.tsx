@@ -6,50 +6,28 @@ import MatchCard from "@/components/dashboard/MatchCard";
 type Props = {
   fixtures: Match[];
 };
-export default function LeagueFixtures({ fixtures }: Props) {
-  const KNOCKOUT_STAGE_ORDER = [
-    "PLAYOFFS",
-    "LAST_32",
-    "LAST_16",
-    "QUARTER_FINALS",
-    "SEMI_FINALS",
-    "THIRD_PLACE",
-    "FINAL",
-  ];
-  const groupByMatchday = (
-    matches: Match[],
-  ): Record<string | number, Match[]> => {
+export default function TeamFixtures({ fixtures }: Props) {
+  const groupByMonth = (matches: Match[]): Record<string, Match[]> => {
     return matches.reduce(
       (acc, match) => {
-        const key = KNOCKOUT_STAGE_ORDER.includes(match.stage)
-          ? match.stage
-          : (match.matchday ?? match.stage);
+        const key = new Date(match.utcDate).toLocaleDateString("en-US", {
+          month: "long",
+          year: "numeric",
+        }); // → "June 2026"
         if (!acc[key]) acc[key] = [];
         acc[key].push(match);
         return acc;
       },
-      {} as Record<string | number, Match[]>,
+      {} as Record<string, Match[]>,
     );
   };
-  const groupedFixtures = groupByMatchday(fixtures);
+  const groupedFixtures = groupByMonth(fixtures);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const matchdays = Object.keys(groupedFixtures).sort((a, b) => {
-    const aNum = Number(a);
-    const bNum = Number(b);
+  const months = Object.keys(groupedFixtures).sort(
+    (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+  );
 
-    // both are matchday numbers
-    if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
-
-    // both are knockout stages
-    if (isNaN(aNum) && isNaN(bNum)) {
-      return KNOCKOUT_STAGE_ORDER.indexOf(a) - KNOCKOUT_STAGE_ORDER.indexOf(b);
-    }
-
-    // numbers come before knockout stages
-    return isNaN(aNum) ? 1 : -1;
-  });
-
-  const currentMatchday = matchdays[currentIndex];
+  const currentMatchday = months[currentIndex];
   const currentFixtures = groupedFixtures[currentMatchday];
   if (!fixtures.length) {
     return (
@@ -62,9 +40,7 @@ export default function LeagueFixtures({ fixtures }: Props) {
     <div className="m-3">
       <div className="flex justify-between items-center my-2">
         <p className="uppercase text-[1.5rem] text-white font-display lg:text-[3rem] md:text-[2rem]  ">
-          {isNaN(Number(currentMatchday))
-            ? currentMatchday.replace(/_/g, " ")
-            : `Matchday ${currentMatchday}`}
+          {currentMatchday}
         </p>
 
         <div className="flex items-center justify-between gap-2">
@@ -78,7 +54,7 @@ export default function LeagueFixtures({ fixtures }: Props) {
 
           <Button
             onClick={() => setCurrentIndex((prev) => prev + 1)}
-            disabled={currentIndex === matchdays.length - 1}
+            disabled={currentIndex === months.length - 1}
             className="text-white disabled:opacity-30 rounded-sm"
           >
             <ChevronRight />

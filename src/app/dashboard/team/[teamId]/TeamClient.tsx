@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import TeamInfo from "./TeamInfo";
+import TeamFixtures from "./TeamFixtures";
+import TeamResults from "./TeamResults";
 
 type Props = {
   teamInfo: TeamInfoResponse;
@@ -77,6 +79,8 @@ export default function TeamClient({ teamInfo, results, fixtures }: Props) {
         </div>
       </div>
       {activeTab === "overview" && <TeamInfo teamInfo={teamInfo} />};
+      {activeTab === "fixtures" && <TeamFixtures fixtures={fixtures} />};
+      {activeTab === "results" && <TeamResults results={results} />};
     </>
   );
 }
