@@ -1,6 +1,7 @@
 import { getCachedStandings } from "@/lib/cached-football-data";
 import { StandingRow } from "@/types/football";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
   standings: StandingRow[];
@@ -51,7 +52,10 @@ export default function StandingsTable({ standings }: Props) {
             >
               <td className="py-3 px-2 text-white text-sm">{row.position}</td>
               <td className="py-3 px-2 text-white text-sm">
-                <div className="flex items-center gap-2">
+                <Link
+                  href={`/dashboard/team/${row.team.id}`}
+                  className="flex items-center gap-2 hover:text-[#e8ff47] transition-colors"
+                >
                   <Image
                     src={row.team.crest}
                     alt={row.team.name}
@@ -60,7 +64,7 @@ export default function StandingsTable({ standings }: Props) {
                   />
                   <span className="hidden md:inline">{row.team.name}</span>
                   <span className="md:hidden">{row.team.tla}</span>
-                </div>
+                </Link>
               </td>
               <td className="py-3 px-2 text-white text-sm">
                 {row.playedGames}

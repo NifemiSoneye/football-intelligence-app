@@ -16,6 +16,7 @@ export default function TeamInfo({ teamInfo }: Props) {
     return age;
   };
   const formatContractDate = (date: string) => {
+    if (!date) return "N/A";
     const [year, month] = date.split("-");
     return new Date(Number(year), Number(month) - 1).toLocaleDateString(
       "en-US",
@@ -26,6 +27,11 @@ export default function TeamInfo({ teamInfo }: Props) {
     );
   };
 
+  const getInitials = (name: string) => {
+    const parts = name.trim().split(" ");
+    if (parts.length === 1) return parts[0][0];
+    return `${parts[0][0]}${parts[parts.length - 1][0]}`;
+  };
   const POSITION_ORDER = [
     "Goalkeeper",
     "Defence",
@@ -61,15 +67,12 @@ export default function TeamInfo({ teamInfo }: Props) {
         <div className="bg-[#131313] flex-col items-center justify-evenly p-4 rounded-md border border-[#e8ff47]/10 text-white my-2 w-full lg:w-[50%] ">
           <div className="flex gap-2 items-center">
             <div className="w-16 h-16 rounded-full bg-[#292c33] flex items-center justify-center text-[#e8ff47] font-bold text-xl">
-              {teamInfo.coach.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
+              {getInitials(teamInfo.coach.name)}
             </div>
             <div>
               <p>{teamInfo.coach.name}</p>
               <p>
-                {teamInfo.coach.nationality} |{" "}
+                {teamInfo.coach.nationality} | Age{" "}
                 {calculateAge(teamInfo.coach.dateOfBirth)}
               </p>
               <p>
@@ -94,7 +97,7 @@ export default function TeamInfo({ teamInfo }: Props) {
                 width={50}
                 height={50}
               />
-              <p className="text-[13px] text-nowrap">{competion.name}</p>
+              <p className="text-[13px] text-nowrap my-1">{competion.name}</p>
             </div>
           ))}
         </div>
@@ -123,10 +126,7 @@ export default function TeamInfo({ teamInfo }: Props) {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#292c33] flex items-center justify-center text-[#e8ff47] text-xs font-bold">
-                        {player.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
+                        {getInitials(player.name)}
                       </div>
                       <div>
                         <p className="text-white text-sm">{player.name}</p>
@@ -135,9 +135,12 @@ export default function TeamInfo({ teamInfo }: Props) {
                         </p>
                       </div>
                     </div>
-                    <p className="text-[#8A93A8] text-xs">
-                      {calculateAge(player.dateOfBirth)}
-                    </p>
+                    <div className="flex flex-col items-center gap-1">
+                      <p className="text-white text-sm">Age</p>
+                      <p className="text-[#8A93A8] text-xs">
+                        {calculateAge(player.dateOfBirth)}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
