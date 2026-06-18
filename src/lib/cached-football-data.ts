@@ -7,7 +7,14 @@ import {
   getTeamInfo,
   getTeamFixtures,
   getTeamResults,
+  getMatch,
 } from "./football-data";
+import {
+  getSofascoreMatchId,
+  getSofascoreStatistics,
+  getSofascoreLineups,
+  getSofascoreIncidents,
+} from "./sofascore";
 
 export const getCachedFixtures = unstable_cache(
   async (leagueId: number) => getFixtures(leagueId),
@@ -61,4 +68,41 @@ export const getCachedLeagueFixtures = unstable_cache(
   async (id: number, season?: number) => getFixtures(id, season),
   ["league-fixtures"],
   { revalidate: 3600 },
+);
+
+export const getCachedSofascoreMatchData = unstable_cache(
+  async (
+    tournamentId: number,
+    seasonId: number,
+    homeTeamName: string,
+    awayTeamName: string,
+    utcDate: string,
+    matchId: number,
+  ) => {
+    const sofascoreId = await getSofascoreMatchId(
+      tournamentId,
+      seasonId,
+      homeTeamName,
+      awayTeamName,
+      utcDate,
+    );
+
+    if (!sofascoreId) return null;
+
+    const [statistics, lineups, incidents] = await Promise.all([
+      getSofascoreStatistics(sofascoreId),
+      getSofascoreLineups(sofascoreId),
+      getSofascoreIncidents(sofascoreId),
+    ]);
+
+    return { sofascoreId, statistics, lineups, incidents };
+  },
+  ["sofascore-match-data"],
+  { revalidate: 86400, tags: ["sofascore-match-data"] },
+);
+
+export const getCachedMatch = unstable_cache(
+  async (matchId: number) => getMatch(matchId),
+  ["match"],
+  { revalidate: 86400 },
 );

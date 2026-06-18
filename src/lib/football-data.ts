@@ -138,3 +138,12 @@ export const getLeagueTeams = async (
     throw new Error(`Failed to fetch teams for league ${leagueId}`);
   }
 };
+
+export const getMatch = async (matchId: number) => {
+  try {
+    return await footballFetch(`/matches/${matchId}`, 86400);
+  } catch (err) {
+    console.error(err);
+    throw new Error(`Failed to fetch match ${matchId}`);
+  }
+};
