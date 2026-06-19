@@ -13,3 +13,14 @@ export const config = {
     "/settings/:path*",
   ],
 };
+
+/* import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+
+export default function proxy(request: NextRequest) {
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/dashboard/:path*", "/onboarding/:path*"],
+}; */

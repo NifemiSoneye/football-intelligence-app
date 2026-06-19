@@ -20,7 +20,7 @@ export default async function MatchPage({ params }: Props) {
 
   const isFinished = match?.status === "FINISHED";
 
-  let sofascoreData = null;
+  let sofascoreData: any = null;
 
   if (isFinished && league?.sofascore) {
     sofascoreData = await getCachedSofascoreMatchData(
@@ -33,11 +33,5 @@ export default async function MatchPage({ params }: Props) {
     );
   }
 
-  return (
-    <MatchClient
-      match={match}
-      sofascoreData={sofascoreData}
-      leagueId={leagueIdNum}
-    />
-  );
+  return <MatchClient match={match} sofascoreData={sofascoreData} />;
 }
