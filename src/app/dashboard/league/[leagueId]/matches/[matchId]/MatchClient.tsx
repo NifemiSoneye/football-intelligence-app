@@ -38,7 +38,7 @@ export default function MatchClient({ match, sofascoreData }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white overflow-x-hidden font-body">
+    <div className="min-h-screen text-white overflow-x-hidden font-body">
       {/* Header */}
       <div className="px-4 pt-6 pb-4 md:px-8">
         {/* Competition + Matchday */}
