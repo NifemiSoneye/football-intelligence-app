@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Match } from "@/types/football";
 import MatchOverview from "./MatchOverview";
+import MatchStats from "./MatchStats";
 
 type Tab = "overview" | "stats" | "lineups" | "ai";
 
@@ -141,7 +142,11 @@ export default function MatchClient({ match, sofascoreData }: Props) {
           <MatchOverview match={match} sofascoreData={sofascoreData} />
         )}
         {activeTab === "stats" && (
-          <div className="text-zinc-500 text-sm">Stats coming soon</div>
+          <MatchStats
+            statistics={sofascoreData?.statistics?.statistics ?? []}
+            homeTeamName={match.homeTeam.shortName}
+            awayTeamName={match.awayTeam.shortName}
+          />
         )}
         {activeTab === "lineups" && (
           <div className="text-zinc-500 text-sm">Lineups coming soon</div>
