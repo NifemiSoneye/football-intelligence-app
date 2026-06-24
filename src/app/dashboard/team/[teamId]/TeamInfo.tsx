@@ -27,7 +27,8 @@ export default function TeamInfo({ teamInfo }: Props) {
     );
   };
 
-  const getInitials = (name: string) => {
+  const getInitials = (name?: string | null) => {
+    if (!name) return "?";
     const parts = name.trim().split(" ");
     if (parts.length === 1) return parts[0][0];
     return `${parts[0][0]}${parts[parts.length - 1][0]}`;
@@ -64,24 +65,28 @@ export default function TeamInfo({ teamInfo }: Props) {
       <section>
         <p className="text-white uppercase  font-semibold">Leadership</p>
 
-        <div className="bg-[#131313] flex-col items-center justify-evenly p-4 rounded-md border border-[#e8ff47]/10 text-white my-2 w-full lg:w-[50%] ">
-          <div className="flex gap-2 items-center">
-            <div className="w-16 h-16 rounded-full bg-[#292c33] flex items-center justify-center text-[#e8ff47] font-bold text-xl">
-              {getInitials(teamInfo.coach.name)}
-            </div>
-            <div>
-              <p>{teamInfo.coach.name}</p>
-              <p>
-                {teamInfo.coach.nationality} | Age{" "}
-                {calculateAge(teamInfo.coach.dateOfBirth)}
-              </p>
-              <p>
-                Head Coach . Since{" "}
-                {formatContractDate(teamInfo.coach.contract.start)}
-              </p>
+        {teamInfo.coach && (
+          <div className="bg-[#131313] flex-col items-center justify-evenly p-4 rounded-md border border-[#e8ff47]/10 text-white my-2 w-full lg:w-[50%]">
+            <div className="flex gap-2 items-center">
+              <div className="w-16 h-16 rounded-full bg-[#292c33] flex items-center justify-center text-[#e8ff47] font-bold text-xl">
+                {getInitials(teamInfo.coach.name)}
+              </div>
+              <div>
+                <p>{teamInfo.coach.name ?? "Unknown Coach"}</p>
+                <p>
+                  {teamInfo.coach.nationality} | Age{" "}
+                  {teamInfo.coach.dateOfBirth
+                    ? calculateAge(teamInfo.coach.dateOfBirth)
+                    : "N/A"}
+                </p>
+                <p>
+                  Head Coach . Since{" "}
+                  {formatContractDate(teamInfo.coach.contract?.start)}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <p className="text-white uppercase  font-semibold">
           Active competitions
         </p>
@@ -138,7 +143,9 @@ export default function TeamInfo({ teamInfo }: Props) {
                     <div className="flex flex-col items-center gap-1">
                       <p className="text-white text-sm">Age</p>
                       <p className="text-[#8A93A8] text-xs">
-                        {calculateAge(player.dateOfBirth)}
+                        {player.dateOfBirth
+                          ? calculateAge(player.dateOfBirth)
+                          : "N/A"}
                       </p>
                     </div>
                   </div>

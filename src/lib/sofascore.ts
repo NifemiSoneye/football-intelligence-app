@@ -29,28 +29,64 @@ export const getSofascoreMatchId = async (
   utcDate: string,
 ): Promise<number | null> => {
   try {
-    const data = await sofascoreFetch(
-      `/tournaments/get-last-matches?tournamentId=${tournamentId}&seasonId=${seasonId}&pageIndex=0`,
-    );
-    const events = data.events ?? [];
     const normalizedHome = normalizeTeamName(homeTeamName);
     const normalizedAway = normalizeTeamName(awayTeamName);
     const matchDate = new Date(utcDate).toISOString().split("T")[0];
 
-    const match = events.find((event: any) => {
-      const home = normalizeTeamName(event.homeTeam?.name ?? "");
-      const away = normalizeTeamName(event.awayTeam?.name ?? "");
-      const eventDate = new Date(event.startTimestamp * 1000)
+    let pageIndex = 0;
+    const MAX_PAGES = 20;
+
+    while (pageIndex < MAX_PAGES) {
+      const data = await sofascoreFetch(
+        `/tournaments/get-last-matches?tournamentId=${tournamentId}&seasonId=${seasonId}&pageIndex=${pageIndex}`,
+      );
+
+      const events = data.events ?? [];
+      if (events.length === 0) break;
+
+      console.log(
+        `Page ${pageIndex} - events:`,
+        events.map((e: any) => ({
+          home: e.homeTeam?.name,
+          away: e.awayTeam?.name,
+          date: new Date(e.startTimestamp * 1000).toISOString().split("T")[0],
+        })),
+      );
+      console.log(
+        "Looking for:",
+        normalizedHome,
+        "vs",
+        normalizedAway,
+        "on",
+        matchDate,
+      );
+
+      const match = events.find((event: any) => {
+        const home = normalizeTeamName(event.homeTeam?.name ?? "");
+        const away = normalizeTeamName(event.awayTeam?.name ?? "");
+        const eventDate = new Date(event.startTimestamp * 1000)
+          .toISOString()
+          .split("T")[0];
+        return (
+          home === normalizedHome &&
+          away === normalizedAway &&
+          eventDate === matchDate
+        );
+      });
+
+      if (match) return match.id;
+
+      // if earliest event on this page is already before our target date, stop
+      const earliest = events[events.length - 1];
+      const earliestDate = new Date(earliest.startTimestamp * 1000)
         .toISOString()
         .split("T")[0];
-      return (
-        home === normalizedHome &&
-        away === normalizedAway &&
-        eventDate === matchDate
-      );
-    });
+      if (earliestDate < matchDate) break;
 
-    return match?.id ?? null;
+      pageIndex++;
+    }
+
+    return null;
   } catch (err) {
     console.error(err);
     return null;

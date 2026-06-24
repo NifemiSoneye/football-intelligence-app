@@ -33,5 +33,8 @@ export default async function MatchPage({ params }: Props) {
     );
   }
 
+  console.log("match status:", match?.status);
+  console.log("league sofascore:", league?.sofascore);
+
   return <MatchClient match={match} sofascoreData={sofascoreData} />;
 }
