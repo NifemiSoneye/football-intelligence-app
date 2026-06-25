@@ -7,7 +7,7 @@ type ChatMessage = {
   content: string;
 };
 
-type MatchSnapshot = {
+export type MatchSnapshot = {
   match: {
     homeTeam: string;
     awayTeam: string;
