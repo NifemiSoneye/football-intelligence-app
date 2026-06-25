@@ -7,6 +7,7 @@ import {
   json,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { unique } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -31,19 +32,25 @@ export const userPreferences = pgTable("user_preferences", {
     .$onUpdate(() => new Date()),
 });
 
-export const matchChatSession = pgTable("match_chat_sessions", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  matchId: integer("match_id").notNull(),
-  matchSnapshot: json("match_snapshot").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date()),
-});
+export const matchChatSession = pgTable(
+  "match_chat_sessions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    matchId: integer("match_id").notNull(),
+    matchSnapshot: json("match_snapshot").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at")
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => ({
+    uniqueUserMatch: unique().on(table.userId, table.matchId),
+  }),
+);
 
 export const chatMessages = pgTable("chat_messages", {
   id: text("id").primaryKey(),
