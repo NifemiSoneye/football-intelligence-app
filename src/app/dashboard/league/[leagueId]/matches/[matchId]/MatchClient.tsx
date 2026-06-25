@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Match } from "@/types/football";
 import MatchOverview from "./MatchOverview";
 import MatchStats from "./MatchStats";
+import MatchLineups from "./MatchLineups";
 
 type Tab = "overview" | "stats" | "lineups" | "ai";
 
@@ -37,6 +38,16 @@ export default function MatchClient({ match, sofascoreData }: Props) {
     { id: "lineups", label: "Lineups" },
     ...(isFinished ? [{ id: "ai" as Tab, label: "⚡ AI Analysis" }] : []),
   ];
+
+  console.log("lineups:", JSON.stringify(sofascoreData?.lineups, null, 2));
+  console.log(
+    "playerColor:",
+    JSON.stringify(sofascoreData?.lineups?.home?.playerColor, null, 2),
+  );
+  console.log(
+    "goalkeeperColor:",
+    JSON.stringify(sofascoreData?.lineups?.home?.goalkeeperColor, null, 2),
+  );
 
   return (
     <div className="min-h-screen text-white overflow-x-hidden font-body">
@@ -148,8 +159,12 @@ export default function MatchClient({ match, sofascoreData }: Props) {
             awayTeamName={match.awayTeam.shortName}
           />
         )}
-        {activeTab === "lineups" && (
-          <div className="text-zinc-500 text-sm">Lineups coming soon</div>
+        {activeTab === "lineups" && sofascoreData?.lineups && (
+          <MatchLineups
+            lineups={sofascoreData.lineups}
+            homeTeamName={match.homeTeam.shortName}
+            awayTeamName={match.awayTeam.shortName}
+          />
         )}
         {activeTab === "ai" && (
           <div className="text-zinc-500 text-sm">AI Analysis coming soon</div>
