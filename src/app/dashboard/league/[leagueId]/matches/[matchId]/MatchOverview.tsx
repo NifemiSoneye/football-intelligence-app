@@ -68,7 +68,7 @@ function EventContent({
           className={`flex items-center gap-1.5 ${isHome ? "flex-row-reverse" : "flex-row"}`}
         >
           <EventIcon incident={incident} />
-          <span className="text-sm font-bold text-[#e8ff47] font-[family-name:var(--font-body)]">
+          <span className="text-sm font-bold text-[#e8ff47] font-body">
             {incident.player?.name}
           </span>
         </div>
@@ -88,7 +88,7 @@ function EventContent({
           className={`flex items-center gap-1.5 ${isHome ? "flex-row-reverse" : "flex-row"}`}
         >
           <EventIcon incident={incident} />
-          <span className="text-sm font-bold text-white font-[family-name:var(--font-body)]">
+          <span className="text-sm font-bold text-white font-body">
             {incident.player?.name}
           </span>
         </div>
@@ -108,7 +108,7 @@ function EventContent({
           className={`flex items-center gap-1.5 ${isHome ? "flex-row-reverse" : "flex-row"}`}
         >
           <EventIcon incident={incident} />
-          <span className="text-sm font-bold text-white font-[family-name:var(--font-body)]">
+          <span className="text-sm font-bold text-white font-body">
             {incident.playerIn?.name}
           </span>
         </div>
@@ -150,7 +150,7 @@ export default function MatchOverview({ match, sofascoreData }: Props) {
       {/* Left: Events timeline */}
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-6">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-400 font-[family-name:var(--font-body)]">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-400 font-body">
             Match Events
           </h2>
         </div>
@@ -167,10 +167,7 @@ export default function MatchOverview({ match, sofascoreData }: Props) {
               const minute = formatMinute(event.time, event.addedTime);
 
               return (
-                <div
-                  key={idx}
-                  className="relative flex items-center min-h-[64px]"
-                >
+                <div key={idx} className="relative flex items-center min-h-16">
                   {/* Home side */}
                   <div className="flex-1 flex flex-col items-end pr-8">
                     {isHome && <EventContent incident={event} isHome={true} />}
@@ -178,7 +175,7 @@ export default function MatchOverview({ match, sofascoreData }: Props) {
 
                   {/* Minute badge */}
                   <div
-                    className={`absolute left-1/2 -translate-x-1/2 z-10 px-2 py-1 rounded text-[10px] font-bold min-w-[44px] text-center whitespace-nowrap ${
+                    className={`absolute left-1/2 -translate-x-1/2 z-10 px-2 py-1 rounded text-[10px] font-bold min-w-11 text-center whitespace-nowrap ${
                       event.incidentType === "goal"
                         ? isHome
                           ? "bg-[#e8ff47] text-black"

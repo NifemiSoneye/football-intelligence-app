@@ -98,8 +98,6 @@ function StatBar({ stat }: { stat: StatItem }) {
     : awayWins
       ? "text-[#e8ff47]"
       : "text-zinc-400";
-
-  // bar widths
   const total = stat.homeValue + stat.awayValue;
   const homeBarPct = total === 0 ? 50 : (stat.homeValue / total) * 100;
   const awayBarPct = 100 - homeBarPct;
