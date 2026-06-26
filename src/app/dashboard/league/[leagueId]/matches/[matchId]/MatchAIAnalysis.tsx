@@ -13,6 +13,7 @@ type Message = {
 type Props = {
   matchId: number;
   initialMessages: Message[];
+  isActive: boolean;
 };
 
 const MAX_MESSAGES_PER_SESSION = 10;
@@ -55,7 +56,11 @@ function MessageBubble({ message }: { message: Message }) {
   );
 }
 
-export default function MatchAIAnalysis({ matchId, initialMessages }: Props) {
+export default function MatchAIAnalysis({
+  matchId,
+  initialMessages,
+  isActive,
+}: Props) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -68,7 +73,7 @@ export default function MatchAIAnalysis({ matchId, initialMessages }: Props) {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+  }, [messages, isLoading, isActive]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -110,7 +115,7 @@ export default function MatchAIAnalysis({ matchId, initialMessages }: Props) {
   return (
     <div className="w-full max-w-3xl mx-auto">
       {/* Message list */}
-      <div className="min-h-[400px] max-h-[500px] overflow-y-auto space-y-4 scrollbar-none px-2 pb-6">
+      <div className="min-h-[400px] max-h-[70vh] overflow-y-auto space-y-4 scrollbar-none px-2 pb-6">
         {/* Empty state */}
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-6 text-center px-4">

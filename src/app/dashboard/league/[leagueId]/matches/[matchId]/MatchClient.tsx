@@ -191,6 +191,7 @@ export default function MatchClient({
           <MatchAIAnalysis
             matchId={matchId}
             initialMessages={initialMessages}
+            isActive={activeTab === "ai"}
           />
         </div>
       </div>
