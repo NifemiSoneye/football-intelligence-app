@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { sendMessage } from "@/app/actions/chat-actions";
 import { Loader2, Send } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 type Message = {
   role: "user" | "assistant";
@@ -47,8 +48,8 @@ function MessageBubble({ message }: { message: Message }) {
 
   return (
     <div className="flex justify-start">
-      <div className="max-w-[80%] md:max-w-[65%] px-4 py-3 rounded-2xl rounded-tl-none bg-zinc-900 text-white text-sm font-[family-name:var(--font-body)] whitespace-pre-wrap leading-relaxed">
-        {message.content}
+      <div className="max-w-[80%] md:max-w-[65%] px-4 py-3 rounded-2xl rounded-tl-none bg-zinc-900 text-white text-sm font-[family-name:var(--font-body)] leading-relaxed prose prose-invert prose-sm max-w-none">
+        <ReactMarkdown>{message.content}</ReactMarkdown>
       </div>
     </div>
   );

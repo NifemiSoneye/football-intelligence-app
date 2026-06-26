@@ -156,30 +156,43 @@ export default function MatchClient({
       </div>
 
       {/* Tab content */}
-      <div className={activeTab === "ai" ? "" : "px-4 md:px-8 py-6"}>
-        {activeTab === "overview" && (
+      <div>
+        <div
+          className={`${activeTab === "overview" ? "block" : "hidden"} px-4 md:px-8 py-6`}
+        >
           <MatchOverview match={match} sofascoreData={sofascoreData} />
-        )}
-        {activeTab === "stats" && (
+        </div>
+
+        <div
+          className={`${activeTab === "stats" ? "block" : "hidden"} px-4 md:px-8 py-6`}
+        >
           <MatchStats
             statistics={sofascoreData?.statistics?.statistics ?? []}
             homeTeamName={match.homeTeam.shortName}
             awayTeamName={match.awayTeam.shortName}
           />
-        )}
-        {activeTab === "lineups" && sofascoreData?.lineups && (
-          <MatchLineups
-            lineups={sofascoreData.lineups}
-            homeTeamName={match.homeTeam.shortName}
-            awayTeamName={match.awayTeam.shortName}
-          />
-        )}
-        {activeTab === "ai" && (
+        </div>
+
+        <div
+          className={`${activeTab === "lineups" ? "block" : "hidden"} px-4 md:px-8 py-6`}
+        >
+          {sofascoreData?.lineups && (
+            <MatchLineups
+              lineups={sofascoreData.lineups}
+              homeTeamName={match.homeTeam.shortName}
+              awayTeamName={match.awayTeam.shortName}
+            />
+          )}
+        </div>
+
+        <div
+          className={`${activeTab === "ai" ? "block" : "hidden"} px-4 md:px-8 py-6`}
+        >
           <MatchAIAnalysis
             matchId={matchId}
             initialMessages={initialMessages}
           />
-        )}
+        </div>
       </div>
     </div>
   );
