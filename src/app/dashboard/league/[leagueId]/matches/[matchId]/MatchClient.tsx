@@ -6,15 +6,23 @@ import { Match } from "@/types/football";
 import MatchOverview from "./MatchOverview";
 import MatchStats from "./MatchStats";
 import MatchLineups from "./MatchLineups";
+import MatchAIAnalysis from "./MatchAIAnalysis";
 
 type Tab = "overview" | "stats" | "lineups" | "ai";
 
 type Props = {
   match: Match;
   sofascoreData: any;
+  matchId: number;
+  initialMessages: { role: "user" | "assistant"; content: string }[];
 };
 
-export default function MatchClient({ match, sofascoreData }: Props) {
+export default function MatchClient({
+  match,
+  sofascoreData,
+  matchId,
+  initialMessages,
+}: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   const { homeTeam, awayTeam, score, competition, matchday, status } = match;
@@ -148,7 +156,7 @@ export default function MatchClient({ match, sofascoreData }: Props) {
       </div>
 
       {/* Tab content */}
-      <div className="px-4 md:px-8 py-6">
+      <div className={activeTab === "ai" ? "" : "px-4 md:px-8 py-6"}>
         {activeTab === "overview" && (
           <MatchOverview match={match} sofascoreData={sofascoreData} />
         )}
@@ -167,7 +175,10 @@ export default function MatchClient({ match, sofascoreData }: Props) {
           />
         )}
         {activeTab === "ai" && (
-          <div className="text-zinc-500 text-sm">AI Analysis coming soon</div>
+          <MatchAIAnalysis
+            matchId={matchId}
+            initialMessages={initialMessages}
+          />
         )}
       </div>
     </div>

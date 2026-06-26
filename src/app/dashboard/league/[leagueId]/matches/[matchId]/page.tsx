@@ -6,9 +6,9 @@ import { LEAGUES } from "@/lib/constants";
 import MatchClient from "./MatchClient";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-import { eq, and } from "drizzle-orm";
+import { eq, and, asc } from "drizzle-orm";
 import { db } from "@/db";
-import { matchChatSession, users } from "@/db/schema";
+import { matchChatSession, users, chatMessages } from "@/db/schema";
 import { buildMatchSnapshot } from "@/lib/match-snapshot";
 
 type Props = {
@@ -38,6 +38,7 @@ export default async function MatchPage({ params }: Props) {
   const isFinished = match?.status === "FINISHED";
 
   let sofascoreData: any = null;
+  let initialMessages: { role: "user" | "assistant"; content: string }[] = [];
 
   if (isFinished && league?.sofascore) {
     sofascoreData = await getCachedSofascoreMatchData(
@@ -69,8 +70,25 @@ export default async function MatchPage({ params }: Props) {
           matchSnapshot: snapshot,
         })
         .onConflictDoNothing();
+    } else {
+      const messages = await db.query.chatMessages.findMany({
+        where: eq(chatMessages.sessionId, existingSession.id),
+        orderBy: asc(chatMessages.createdAt),
+      });
+
+      initialMessages = messages.map((m) => ({
+        role: m.role as "user" | "assistant",
+        content: m.content,
+      }));
     }
   }
 
-  return <MatchClient match={match} sofascoreData={sofascoreData} />;
+  return (
+    <MatchClient
+      match={match}
+      sofascoreData={sofascoreData}
+      matchId={matchIdNum}
+      initialMessages={initialMessages}
+    />
+  );
 }
