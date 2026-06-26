@@ -5,8 +5,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import MatchCard from "@/components/dashboard/MatchCard";
 type Props = {
   results: Match[];
+  leagueId: number;
 };
-export default function LeagueResults({ results }: Props) {
+export default function LeagueResults({ results, leagueId }: Props) {
   const KNOCKOUT_STAGE_ORDER = [
     "PLAYOFFS",
     "LAST_16",

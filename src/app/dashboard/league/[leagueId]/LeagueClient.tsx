@@ -11,10 +11,16 @@ type Props = {
   fixtures: Match[];
   results: Match[];
   standings: StandingsResponse;
+  leagueId: number;
 };
 type Tab = "standings" | "results" | "fixtures";
 
-export default function LeagueClient({ fixtures, results, standings }: Props) {
+export default function LeagueClient({
+  fixtures,
+  results,
+  standings,
+  leagueId,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activeTab = (searchParams.get("tab") as Tab) ?? "standings";
@@ -85,8 +91,14 @@ export default function LeagueClient({ fixtures, results, standings }: Props) {
           ))}
         </>
       )}
-      {activeTab === "results" && <LeagueResults results={results} />};
-      {activeTab === "fixtures" && <LeagueFixtures fixtures={fixtures} />};
+      {activeTab === "results" && (
+        <LeagueResults results={results} leagueId={leagueId} />
+      )}
+      ;
+      {activeTab === "fixtures" && (
+        <LeagueFixtures fixtures={fixtures} leagueId={leagueId} />
+      )}
+      ;
     </>
   );
 }

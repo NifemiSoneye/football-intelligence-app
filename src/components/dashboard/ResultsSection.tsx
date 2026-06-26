@@ -9,9 +9,10 @@ import Link from "next/link";
 type Props = {
   results: Match[];
   id: number | null;
+  leagueId: number;
 };
 
-export default function ResultsSection({ results, id }: Props) {
+export default function ResultsSection({ results, id, leagueId }: Props) {
   const ITEMS_PER_PAGE = 3;
 
   const [page, setPage] = useState(0);

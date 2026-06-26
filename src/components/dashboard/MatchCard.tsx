@@ -1,6 +1,8 @@
 "use client";
 import { Match } from "@/types/football";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Prop = {
   Match: Match;
@@ -8,14 +10,24 @@ type Prop = {
 };
 
 export default function MatchCard({ Match, variant }: Prop) {
+  const leagueId = Match.competition.id;
+  const router = useRouter();
   const formatDate = (utc: string) => {
     return new Intl.DateTimeFormat("en-US", {
       month: "short",
       day: "numeric",
     }).format(new Date(utc));
   };
+  const handleClick = () => {
+    if (Match.status === "FINISHED") {
+      router.push(`/dashboard/league/${leagueId}/matches/${Match.id}`);
+    }
+  };
   return (
-    <div className="bg-[#131313] flex items-center justify-evenly p-4 rounded-md border border-[#292c33] ">
+    <div
+      onClick={handleClick}
+      className="bg-[#131313] flex items-center justify-evenly p-4 rounded-md border border-[#292c33] cursor-pointer "
+    >
       <div className="flex flex-col items-center">
         <Image
           src={Match.homeTeam.crest || "/placeholder-crest.svg"}

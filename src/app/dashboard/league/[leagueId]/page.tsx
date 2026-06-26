@@ -41,6 +41,7 @@ export default async function LeaguePage({ params }: Props) {
       fixtures={fixturesData.matches}
       results={resultsData.matches}
       standings={standingsData}
+      leagueId={id}
     />
   );
 }

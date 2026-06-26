@@ -8,9 +8,10 @@ import Link from "next/link";
 type Props = {
   fixtures: Match[];
   id: number | null;
+  leagueId: number;
 };
 
-export default function FixturesSection({ fixtures, id }: Props) {
+export default function FixturesSection({ fixtures, id, leagueId }: Props) {
   const ITEMS_PER_PAGE = 3;
 
   const [page, setPage] = useState(0);
