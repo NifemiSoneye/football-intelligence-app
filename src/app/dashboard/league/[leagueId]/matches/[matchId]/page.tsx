@@ -60,7 +60,7 @@ export default async function MatchPage({ params }: Props) {
       ),
     });
     if (!existingSession) {
-      const snapshot = buildMatchSnapshot(match, sofascoreData);
+      const snapshot = buildMatchSnapshot(match, sofascoreData, leagueIdNum);
       await db
         .insert(matchChatSession)
         .values({

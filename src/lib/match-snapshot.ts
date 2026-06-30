@@ -100,9 +100,14 @@ function buildLineups(
   };
 }
 
-export function buildMatchSnapshot(match: Match, sofascoreData: any) {
+export function buildMatchSnapshot(
+  match: Match,
+  sofascoreData: any,
+  leagueId: number,
+) {
   return {
     match: {
+      leagueId: leagueId,
       homeTeam: match.homeTeam.name,
       awayTeam: match.awayTeam.name,
       score: {
