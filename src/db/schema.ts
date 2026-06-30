@@ -9,7 +9,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { unique } from "drizzle-orm/pg-core";
-
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
   kindeId: varchar("kinde_id").notNull().unique(),
@@ -63,3 +62,17 @@ export const chatMessages = pgTable("chat_messages", {
   content: varchar("content").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const matchChatSessionRelations = relations(
+  matchChatSession,
+  ({ many }) => ({
+    messages: many(chatMessages),
+  }),
+);
+
+export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
+  session: one(matchChatSession, {
+    fields: [chatMessages.sessionId],
+    references: [matchChatSession.id],
+  }),
+}));

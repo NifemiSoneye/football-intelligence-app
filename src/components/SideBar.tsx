@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ChevronDown, Trophy, ChevronUp } from "lucide-react";
 import { LEAGUES } from "@/lib/constants";
 import { useState } from "react";
+import { Search } from "lucide-react";
 
 type Props = {
   leagueIds: number[];
@@ -94,6 +95,14 @@ export default function SideBar({ leagueIds }: Props) {
             </div>
           )}
         </div>
+        <Link
+          href="/dashboard/saved-analyses"
+          className={`flex items-center gap-3 p-3 ${pathname === "/dashboard/saved-analyses" ? "text-[#e8ff47] after:opacity-100 font-semibold " : "text-white"}`}
+          onClick={toggle}
+        >
+          <Search className="w-5 h-5" />
+          <p>Analyses</p>
+        </Link>
       </aside>
     </>
   );
