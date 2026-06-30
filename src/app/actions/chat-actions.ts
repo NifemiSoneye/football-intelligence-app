@@ -60,3 +60,28 @@ export async function sendMessage(matchId: number, userMessage: string) {
   });
   return response;
 }
+
+export async function saveAnalysis(matchId: number) {
+  const { getUser } = getKindeServerSession();
+  const kindeUser = await getUser();
+  if (!kindeUser?.id) redirect("/login");
+
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.kindeId, kindeUser.id),
+  });
+  if (!dbUser) throw new Error("User not found");
+
+  const session = await db.query.matchChatSession.findFirst({
+    where: and(
+      eq(matchChatSession.matchId, matchId),
+      eq(matchChatSession.userId, dbUser.id),
+    ),
+  });
+
+  if (!session) throw new Error("Session not found");
+
+  await db
+    .update(matchChatSession)
+    .set({ saved: true })
+    .where(eq(matchChatSession.id, session.id));
+}
