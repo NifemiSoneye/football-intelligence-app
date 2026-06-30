@@ -73,7 +73,7 @@ export default function MatchClient({
         <div className="flex items-center justify-between gap-4">
           {/* Home team */}
           <div className="flex flex-col items-center gap-2 flex-1 min-w-0">
-            <div className="w-16 h-16 md:w-20 md:h-20 relative bg-zinc-800 rounded-xl p-2">
+            <div className="w-16 h-16 md:w-20 md:h-20 relative  rounded-xl p-2">
               <Image
                 src={homeTeam.crest}
                 alt={homeTeam.name}
@@ -117,7 +117,7 @@ export default function MatchClient({
 
           {/* Away team */}
           <div className="flex flex-col items-center gap-2 flex-1 min-w-0">
-            <div className="w-16 h-16 md:w-20 md:h-20 relative bg-zinc-800 rounded-xl p-2">
+            <div className="w-16 h-16 md:w-20 md:h-20 relative  rounded-xl p-2">
               <Image
                 src={awayTeam.crest}
                 alt={awayTeam.name}

@@ -59,7 +59,6 @@ export default async function MatchPage({ params }: Props) {
         eq(matchChatSession.userId, dbUser.id),
       ),
     });
-
     if (!existingSession) {
       const snapshot = buildMatchSnapshot(match, sofascoreData);
       await db
