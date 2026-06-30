@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { sendMessage } from "@/app/actions/chat-actions";
 import { Loader2, Send } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { saveAnalysis } from "@/app/actions/chat-actions";
+import { useToast } from "@/hooks/use-toast";
+import { Bookmark, BookmarkCheck } from "lucide-react";
 
 type Message = {
   role: "user" | "assistant";
@@ -14,6 +17,7 @@ type Props = {
   matchId: number;
   initialMessages: Message[];
   isActive: boolean;
+  initialSaved: boolean;
 };
 
 const MAX_MESSAGES_PER_SESSION = 10;
@@ -60,10 +64,13 @@ export default function MatchAIAnalysis({
   matchId,
   initialMessages,
   isActive,
+  initialSaved,
 }: Props) {
+  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaved, setIsSaved] = useState(initialSaved);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -112,8 +119,46 @@ export default function MatchAIAnalysis({
     }
   };
 
+  const handleSave = async () => {
+    try {
+      await saveAnalysis(matchId);
+      setIsSaved(true);
+      toast({
+        variant: "default",
+        title: "Success! 🎉",
+        description: "Analysis saved!",
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Error! 🎉",
+        description: "Analysis could not be saved!",
+      });
+    }
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto">
+      {messages.length > 0 && (
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={handleSave}
+            disabled={isSaved}
+            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-colors ${
+              isSaved
+                ? "text-[#e8ff47] bg-zinc-800 cursor-default"
+                : "text-zinc-400 hover:text-[#e8ff47] hover:bg-zinc-800"
+            }`}
+          >
+            {isSaved ? (
+              <BookmarkCheck className="w-4 h-4" />
+            ) : (
+              <Bookmark className="w-4 h-4" />
+            )}
+            {isSaved ? "Saved" : "Save Analysis"}
+          </button>
+        </div>
+      )}
       {/* Message list */}
       <div className="min-h-100 max-h-[70vh] overflow-y-auto space-y-4 scrollbar-none px-2 pb-6">
         {/* Empty state */}

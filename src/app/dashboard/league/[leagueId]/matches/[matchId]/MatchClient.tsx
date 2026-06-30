@@ -15,6 +15,7 @@ type Props = {
   sofascoreData: any;
   matchId: number;
   initialMessages: { role: "user" | "assistant"; content: string }[];
+  initialSaved: boolean;
 };
 
 export default function MatchClient({
@@ -22,6 +23,7 @@ export default function MatchClient({
   sofascoreData,
   matchId,
   initialMessages,
+  initialSaved,
 }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 
@@ -192,6 +194,7 @@ export default function MatchClient({
             matchId={matchId}
             initialMessages={initialMessages}
             isActive={activeTab === "ai"}
+            initialSaved={initialSaved}
           />
         </div>
       </div>

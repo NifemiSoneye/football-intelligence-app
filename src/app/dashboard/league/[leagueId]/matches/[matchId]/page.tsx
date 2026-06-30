@@ -39,6 +39,7 @@ export default async function MatchPage({ params }: Props) {
 
   let sofascoreData: any = null;
   let initialMessages: { role: "user" | "assistant"; content: string }[] = [];
+  let initialSaved: boolean = false;
 
   if (isFinished && league?.sofascore) {
     sofascoreData = await getCachedSofascoreMatchData(
@@ -80,6 +81,8 @@ export default async function MatchPage({ params }: Props) {
         role: m.role as "user" | "assistant",
         content: m.content,
       }));
+
+      initialSaved = existingSession?.saved ?? false;
     }
   }
 
@@ -89,6 +92,7 @@ export default async function MatchPage({ params }: Props) {
       sofascoreData={sofascoreData}
       matchId={matchIdNum}
       initialMessages={initialMessages}
+      initialSaved={initialSaved}
     />
   );
 }
