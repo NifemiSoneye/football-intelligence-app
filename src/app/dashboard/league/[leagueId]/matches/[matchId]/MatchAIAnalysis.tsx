@@ -40,7 +40,7 @@ function MessageBubble({ message }: { message: Message }) {
   if (isUser) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[80%] md:max-w-[65%] px-4 py-3 rounded-2xl rounded-tr-none bg-zinc-800 border border-[#e8ff47] text-white text-sm font-[family-name:var(--font-body)] leading-relaxed">
+        <div className="max-w-[80%] md:max-w-[65%] px-4 py-3 rounded-2xl rounded-tr-none bg-zinc-800 border border-[#e8ff47] text-white text-sm font-body leading-relaxed">
           {message.content}
         </div>
       </div>
@@ -49,7 +49,7 @@ function MessageBubble({ message }: { message: Message }) {
 
   return (
     <div className="flex justify-start">
-      <div className="max-w-[80%] md:max-w-[65%] px-4 py-3 rounded-2xl rounded-tl-none bg-zinc-900 text-white text-sm font-[family-name:var(--font-body)] leading-relaxed prose prose-invert prose-sm max-w-none">
+      <div className="md:max-w-[65%] px-4 py-3 rounded-2xl rounded-tl-none bg-zinc-900 text-white text-sm font-body leading-relaxed prose prose-invert prose-sm max-w-none">
         <ReactMarkdown>{message.content}</ReactMarkdown>
       </div>
     </div>
@@ -115,12 +115,12 @@ export default function MatchAIAnalysis({
   return (
     <div className="w-full max-w-3xl mx-auto">
       {/* Message list */}
-      <div className="min-h-[400px] max-h-[70vh] overflow-y-auto space-y-4 scrollbar-none px-2 pb-6">
+      <div className="min-h-100 max-h-[70vh] overflow-y-auto space-y-4 scrollbar-none px-2 pb-6">
         {/* Empty state */}
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center min-h-[400px] gap-6 text-center px-4">
+          <div className="flex flex-col items-center justify-center min-h-100 gap-6 text-center px-4">
             <div>
-              <p className="text-3xl font-bold font-[family-name:var(--font-display)] text-white mb-2 tracking-wide">
+              <p className="text-3xl font-bold font-display text-white mb-2 tracking-wide">
                 AI MATCH ANALYSIS
               </p>
               <p className="text-sm text-zinc-500">
@@ -132,7 +132,7 @@ export default function MatchAIAnalysis({
                 <button
                   key={q}
                   onClick={() => handleSend(q)}
-                  className="text-sm text-left px-4 py-3 rounded-xl border border-zinc-700 text-zinc-300 hover:border-[#e8ff47] hover:text-white transition-colors font-[family-name:var(--font-body)]"
+                  className="text-sm text-left px-4 py-3 rounded-xl border border-zinc-700 text-zinc-300 hover:border-[#e8ff47] hover:text-white transition-colors font-body"
                 >
                   {q}
                 </button>
@@ -177,7 +177,7 @@ export default function MatchAIAnalysis({
               onChange={handleInputChange}
               placeholder="Ask about tactics, players, key moments..."
               rows={1}
-              className="flex-1 bg-transparent text-sm text-white placeholder-zinc-500 resize-none focus:outline-none font-[family-name:var(--font-body)] leading-relaxed"
+              className="flex-1 bg-transparent text-sm text-white placeholder-zinc-500 resize-none focus:outline-none font-body leading-relaxed"
               style={{ maxHeight: "120px" }}
             />
             <button

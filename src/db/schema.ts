@@ -5,6 +5,7 @@ import {
   integer,
   text,
   json,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { unique } from "drizzle-orm/pg-core";
@@ -41,6 +42,7 @@ export const matchChatSession = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     matchId: integer("match_id").notNull(),
     matchSnapshot: json("match_snapshot").notNull(),
+    saved: boolean("saved").notNull().default(false),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at")
       .notNull()
@@ -59,17 +61,5 @@ export const chatMessages = pgTable("chat_messages", {
     .references(() => matchChatSession.id, { onDelete: "cascade" }),
   role: text("role", { enum: ["user", "assistant"] }).notNull(),
   content: varchar("content").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
-
-export const savedAnalyses = pgTable("saved_analyses", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  matchId: integer("match_id").notNull(),
-  matchSnapshot: json("match_snapshot").notNull(),
-  analysisContent: varchar("analysis_content").notNull(),
-  title: varchar("title").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
