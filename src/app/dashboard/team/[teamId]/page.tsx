@@ -44,8 +44,8 @@ export default async function TeamPage({ params }: Props) {
     );
   } catch (err) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] px-8 text-center">
-        <p className="text-white text-xl font-bold font-[family-name:var(--font-display)] mb-2">
+      <div className="flex flex-col items-center justify-center min-h-100 px-8 text-center">
+        <p className="text-white text-xl font-bold font-display mb-2">
           TEAM DATA UNAVAILABLE
         </p>
         <p className="text-zinc-500 text-sm">

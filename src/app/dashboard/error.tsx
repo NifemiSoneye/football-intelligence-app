@@ -13,8 +13,8 @@ export default function DashboardError({ error, reset }: Props) {
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] px-8 text-center">
-      <p className="text-white text-3xl font-bold font-[family-name:var(--font-display)] mb-2">
+    <div className="flex flex-col items-center justify-center min-h-100 px-8 text-center">
+      <p className="text-white text-3xl font-bold font-display mb-2">
         SOMETHING WENT WRONG
       </p>
       <p className="text-zinc-500 text-sm mb-6">
