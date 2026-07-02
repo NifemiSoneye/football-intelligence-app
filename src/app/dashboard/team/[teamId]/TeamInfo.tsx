@@ -15,6 +15,7 @@ export default function TeamInfo({ teamInfo }: Props) {
     }
     return age;
   };
+
   const formatContractDate = (date: string) => {
     if (!date) return "N/A";
     const [year, month] = date.split("-");
@@ -33,6 +34,7 @@ export default function TeamInfo({ teamInfo }: Props) {
     if (parts.length === 1) return parts[0][0];
     return `${parts[0][0]}${parts[parts.length - 1][0]}`;
   };
+
   const POSITION_ORDER = [
     "Goalkeeper",
     "Defence",
@@ -63,16 +65,16 @@ export default function TeamInfo({ teamInfo }: Props) {
   return (
     <div className="m-3">
       <section>
-        <p className="text-white uppercase  font-semibold">Leadership</p>
+        <p className="text-white uppercase font-semibold">Leadership</p>
 
-        {teamInfo.coach && (
+        {teamInfo.coach?.name ? (
           <div className="bg-[#131313] flex-col items-center justify-evenly p-4 rounded-md border border-[#e8ff47]/10 text-white my-2 w-full lg:w-[50%]">
             <div className="flex gap-2 items-center">
               <div className="w-16 h-16 rounded-full bg-[#292c33] flex items-center justify-center text-[#e8ff47] font-bold text-xl">
                 {getInitials(teamInfo.coach.name)}
               </div>
               <div>
-                <p>{teamInfo.coach.name ?? "Unknown Coach"}</p>
+                <p>{teamInfo.coach.name}</p>
                 <p>
                   {teamInfo.coach.nationality} | Age{" "}
                   {teamInfo.coach.dateOfBirth
@@ -86,74 +88,87 @@ export default function TeamInfo({ teamInfo }: Props) {
               </div>
             </div>
           </div>
+        ) : (
+          <p className="text-zinc-500 text-sm my-2">
+            Coach data not yet available for the new season.
+          </p>
         )}
-        <p className="text-white uppercase  font-semibold">
+
+        <p className="text-white uppercase font-semibold mt-4">
           Active competitions
         </p>
         <div className="grid grid-cols-2 gap-3">
-          {teamInfo.runningCompetitions.map((competion) => (
+          {teamInfo.runningCompetitions.map((competition) => (
             <div
-              className="bg-[#131313] flex-col place-items-center p-4 rounded-md border border-[#e8ff47]/10 text-white my-2 "
-              key={competion.id}
+              className="bg-[#131313] flex-col place-items-center p-4 rounded-md border border-[#e8ff47]/10 text-white my-2"
+              key={competition.id}
             >
               <Image
-                src={competion.emblem}
-                alt={competion.name}
+                src={competition.emblem}
+                alt={competition.name}
                 width={50}
                 height={50}
               />
-              <p className="text-[13px] text-nowrap my-1">{competion.name}</p>
+              <p className="text-[13px] text-nowrap my-1">{competition.name}</p>
             </div>
           ))}
         </div>
-        <p className="text-white uppercase  font-semibold">Current Squad</p>
-        {POSITION_ORDER.map((position) => {
-          const players = groupedSquad[position];
-          if (!players.length) return null;
-          return (
-            <div key={position}>
-              <p className="text-[#8A93A8] text-xs uppercase my-2 tracking-widest">
-                {position === "Goalkeeper"
-                  ? "Goalkeepers"
-                  : position === "Defence"
-                    ? "Defenders"
-                    : position === "Midfield"
-                      ? "Midfielders"
-                      : position === "Offence"
-                        ? "Forwards"
-                        : "Reserves / Others"}
-              </p>
-              <div className="md:grid grid-cols-2 gap-2">
-                {players.map((player) => (
-                  <div
-                    key={player.id}
-                    className="flex items-center justify-between py-2 border-b  bg-[#131313] p-4 rounded-md border border-[#e8ff47]/10 text-white my-2"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#292c33] flex items-center justify-center text-[#e8ff47] text-xs font-bold">
-                        {getInitials(player.name)}
+
+        <p className="text-white uppercase font-semibold mt-4">Current Squad</p>
+
+        {teamInfo.squad?.length === 0 ? (
+          <p className="text-zinc-500 text-sm mt-2">
+            Squad data not yet available for the new season.
+          </p>
+        ) : (
+          POSITION_ORDER.map((position) => {
+            const players = groupedSquad[position];
+            if (!players.length) return null;
+            return (
+              <div key={position}>
+                <p className="text-[#8A93A8] text-xs uppercase my-2 tracking-widest">
+                  {position === "Goalkeeper"
+                    ? "Goalkeepers"
+                    : position === "Defence"
+                      ? "Defenders"
+                      : position === "Midfield"
+                        ? "Midfielders"
+                        : position === "Offence"
+                          ? "Forwards"
+                          : "Reserves / Others"}
+                </p>
+                <div className="md:grid grid-cols-2 gap-2">
+                  {players.map((player) => (
+                    <div
+                      key={player.id}
+                      className="flex items-center justify-between py-2 border-b bg-[#131313] p-4 rounded-md border border-[#e8ff47]/10 text-white my-2"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-[#292c33] flex items-center justify-center text-[#e8ff47] text-xs font-bold">
+                          {getInitials(player.name)}
+                        </div>
+                        <div>
+                          <p className="text-white text-sm">{player.name}</p>
+                          <p className="text-[#8A93A8] text-xs">
+                            {player.nationality}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-white text-sm">{player.name}</p>
+                      <div className="flex flex-col items-center gap-1">
+                        <p className="text-white text-sm">Age</p>
                         <p className="text-[#8A93A8] text-xs">
-                          {player.nationality}
+                          {player.dateOfBirth
+                            ? calculateAge(player.dateOfBirth)
+                            : "N/A"}
                         </p>
                       </div>
                     </div>
-                    <div className="flex flex-col items-center gap-1">
-                      <p className="text-white text-sm">Age</p>
-                      <p className="text-[#8A93A8] text-xs">
-                        {player.dateOfBirth
-                          ? calculateAge(player.dateOfBirth)
-                          : "N/A"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </section>
     </div>
   );

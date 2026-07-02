@@ -28,20 +28,31 @@ export default async function TeamPage({ params }: Props) {
 
   if (!dbUser) redirect("/");
 
-  const [teamInfo, resultsData, fixturesData] = await Promise.all([
-    getCachedTeamInfo(id),
-    getCachedTeamResults(id),
-    getCachedTeamFixtures(id),
-  ]);
+  try {
+    const [teamInfo, resultsData, fixturesData] = await Promise.all([
+      getCachedTeamInfo(id),
+      getCachedTeamResults(id),
+      getCachedTeamFixtures(id),
+    ]);
 
-  console.log("coach:", JSON.stringify(teamInfo.coach, null, 2));
-  console.log("squad length:", teamInfo.squad?.length);
-
-  return (
-    <TeamClient
-      teamInfo={teamInfo}
-      results={resultsData.matches}
-      fixtures={fixturesData.matches}
-    />
-  );
+    return (
+      <TeamClient
+        teamInfo={teamInfo}
+        results={resultsData.matches}
+        fixtures={fixturesData.matches}
+      />
+    );
+  } catch (err) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] px-8 text-center">
+        <p className="text-white text-xl font-bold font-[family-name:var(--font-display)] mb-2">
+          TEAM DATA UNAVAILABLE
+        </p>
+        <p className="text-zinc-500 text-sm">
+          Detailed team data is only available for teams in the top 5 European
+          leagues.
+        </p>
+      </div>
+    );
+  }
 }
