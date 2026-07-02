@@ -56,8 +56,8 @@ export default function Home() {
             <rect x="660" y="160" width="100" height="180" />
             <rect x="40" y="195" width="50" height="110" />
             <rect x="710" y="195" width="50" height="110" />
-            <path d="M 40 250 Q 120 180 40 110" fill="none" />
-            <path d="M 760 250 Q 680 180 760 110" fill="none" />
+            <path d="M 140 210 A 70 70 0 0 1 140 290" fill="none" />
+            <path d="M 660 210 A 70 70 0 0 0 660 290" fill="none" />
           </svg>
         </div>
 
@@ -92,8 +92,8 @@ export default function Home() {
         </p>
         <div className="relative flex">
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-linear-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-linear-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
           <div className="flex animate-marquee gap-12 items-center">
             {[...LEAGUES, ...LEAGUES, ...LEAGUES].map((league, i) => (
               <div key={i} className="flex items-center gap-3 shrink-0">
@@ -144,7 +144,7 @@ export default function Home() {
           ].map((f) => (
             <div
               key={f.title}
-              className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-6 hover:border-white/20 transition-colors"
+              className="bg-white/3 border border-white/[0.07] rounded-2xl p-6 hover:border-white/20 transition-colors"
             >
               <div className="text-2xl mb-4">{f.icon}</div>
               <span className="text-[10px] font-medium text-[#e8ff47]/70 tracking-widest uppercase mb-2 block">
@@ -217,7 +217,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="px-6 py-8 max-w-6xl mx-auto border-t border-white/[0.06] flex items-center justify-between">
+      <footer className="px-6 py-8 max-w-6xl mx-auto border-t border-white/6 flex items-center justify-between">
         <span className="text-[#e8ff47] font-bold tracking-tight">FI.</span>
         <p className="text-white/20 text-xs">
           © 2026 Football Intelligence. All rights reserved.
