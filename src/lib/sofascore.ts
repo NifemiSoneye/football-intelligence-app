@@ -15,11 +15,57 @@ const sofascoreFetch = async (endpoint: string) => {
   return response.json();
 };
 
-const normalizeTeamName = (name: string) =>
-  name
+const TEAM_NAME_MAP: Record<string, string> = {
+  "club atletico de madrid": "atletico madrid",
+  "atletico de madrid": "atletico madrid",
+  "real betis balompie": "real betis",
+  "deportivo alaves": "alaves",
+  "rayo vallecano de madrid": "rayo vallecano",
+  "wolverhampton wanderers": "wolverhampton",
+  "paris saint germain": "paris saintgermain",
+  "olympique de marseille": "marseille",
+  "olympique lyonnais": "lyon",
+  "celta de vigo": "celta vigo",
+  "real sociedad de futbol": "real sociedad",
+  "psv eindhoven": "psv",
+  "bayer 04 leverkusen": "bayer leverkusen",
+  "sk slavia praha": "slavia praha",
+  "afc ajax": "ajax",
+  "ssc napoli": "napoli",
+  paphos: "pafos",
+  "fc bayern munchen": "bayern munchen",
+  "bayern munchen": "bayern munchen",
+};
+
+const normalizeTeamName = (name: string) => {
+  const normalized = name
     .toLowerCase()
-    .replace(/\s*fc\s*/gi, "")
+    .replace(/ü/g, "u")
+    .replace(/ö/g, "o")
+    .replace(/ä/g, "a")
+    .replace(/é/g, "e")
+    .replace(/è/g, "e")
+    .replace(/ñ/g, "n")
+    .replace(/ø/g, "o")
+    .replace(/å/g, "a")
+    .replace(/\bafc\b/gi, "")
+    .replace(/\bfc\b/gi, "")
+    .replace(/\bcf\b/gi, "")
+    .replace(/\bsc\b/gi, "")
+    .replace(/\bac\b/gi, "")
+    .replace(/\bud\b/gi, "")
+    .replace(/\brcd\b/gi, "")
+    .replace(/\brc\b/gi, "")
+    .replace(/\bca\b/gi, "")
+    .replace(/&/g, "")
+    .replace(/\band\b/g, "")
+    .replace(/-/g, " ")
+    .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
     .trim();
+
+  return TEAM_NAME_MAP[normalized] ?? normalized;
+};
 
 export const getSofascoreMatchId = async (
   tournamentId: number,
@@ -60,6 +106,7 @@ export const getSofascoreMatchId = async (
         "on",
         matchDate,
       );
+      console.log("Total pages searched:", pageIndex);
 
       const match = events.find((event: any) => {
         const home = normalizeTeamName(event.homeTeam?.name ?? "");
@@ -73,6 +120,8 @@ export const getSofascoreMatchId = async (
           eventDate === matchDate
         );
       });
+
+      console.log("Match found:", match?.id ?? "NOT FOUND");
 
       if (match) return match.id;
 

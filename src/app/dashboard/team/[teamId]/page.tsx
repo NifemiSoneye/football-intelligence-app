@@ -34,6 +34,9 @@ export default async function TeamPage({ params }: Props) {
     getCachedTeamFixtures(id),
   ]);
 
+  console.log("coach:", JSON.stringify(teamInfo.coach, null, 2));
+  console.log("squad length:", teamInfo.squad?.length);
+
   return (
     <TeamClient
       teamInfo={teamInfo}

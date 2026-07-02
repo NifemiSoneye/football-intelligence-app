@@ -7,6 +7,7 @@ import MatchOverview from "./MatchOverview";
 import MatchStats from "./MatchStats";
 import MatchLineups from "./MatchLineups";
 import MatchAIAnalysis from "./MatchAIAnalysis";
+import { useSearchParams } from "next/navigation";
 
 type Tab = "overview" | "stats" | "lineups" | "ai";
 
@@ -17,7 +18,6 @@ type Props = {
   initialMessages: { role: "user" | "assistant"; content: string }[];
   initialSaved: boolean;
 };
-
 export default function MatchClient({
   match,
   sofascoreData,
@@ -25,7 +25,9 @@ export default function MatchClient({
   initialMessages,
   initialSaved,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get("tab") as Tab) ?? "overview";
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
 
   const { homeTeam, awayTeam, score, competition, matchday, status } = match;
 
