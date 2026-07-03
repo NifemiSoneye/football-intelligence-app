@@ -42,16 +42,23 @@ export default async function MatchPage({ params }: Props) {
   let initialSaved: boolean = false;
 
   if (isFinished && league?.sofascore) {
+    const matchSeason = new Date(match.season.startDate).getFullYear();
+    const currentYear = new Date().getFullYear();
+
+    const sofascoreSeasonId =
+      matchSeason >= currentYear
+        ? league.sofascore.seasonId
+        : league.sofascore.previousSeasonId;
+
     sofascoreData = await getCachedSofascoreMatchData(
       league.sofascore.tournamentId,
-      league.sofascore.seasonId,
+      sofascoreSeasonId,
       match.homeTeam.name,
       match.awayTeam.name,
       match.utcDate,
       matchIdNum,
     );
   }
-
   if (isFinished && sofascoreData) {
     const existingSession = await db.query.matchChatSession.findFirst({
       where: and(
