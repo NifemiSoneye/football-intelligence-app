@@ -51,16 +51,6 @@ export default function MatchClient({
     ...(isFinished ? [{ id: "ai" as Tab, label: "⚡ AI Analysis" }] : []),
   ];
 
-  console.log("lineups:", JSON.stringify(sofascoreData?.lineups, null, 2));
-  console.log(
-    "playerColor:",
-    JSON.stringify(sofascoreData?.lineups?.home?.playerColor, null, 2),
-  );
-  console.log(
-    "goalkeeperColor:",
-    JSON.stringify(sofascoreData?.lineups?.home?.goalkeeperColor, null, 2),
-  );
-
   return (
     <div className="min-h-screen text-white overflow-x-hidden font-body">
       {/* Header */}

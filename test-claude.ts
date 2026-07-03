@@ -34,7 +34,6 @@ async function test() {
     [],
     "Who scored in this match and how did Arsenal win?",
   );
-  console.log("Response:", response);
 }
 
 test();

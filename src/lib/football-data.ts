@@ -4,7 +4,6 @@ import { MatchesResponse } from "@/types/football";
 import { TeamInfoResponse, TeamsResponse } from "@/types/football";
 
 const footballFetch = async (endpoint: string, revalidate: number = 3600) => {
-  console.log(`Fetching: ${BASE_URL}${endpoint}`);
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     headers: {
       "X-Auth-Token": process.env.FOOTBALL_DATA_API_KEY!,

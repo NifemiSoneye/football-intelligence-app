@@ -1,7 +1,6 @@
 const SOFASCORE_BASE_URL = "https://sofascore.p.rapidapi.com";
 
 const sofascoreFetch = async (endpoint: string) => {
-  console.log(`Sofascore fetching: ${SOFASCORE_BASE_URL}${endpoint}`);
   const response = await fetch(`${SOFASCORE_BASE_URL}${endpoint}`, {
     headers: {
       "x-rapidapi-key": process.env.RAPIDAPI_KEY!,
@@ -90,24 +89,6 @@ export const getSofascoreMatchId = async (
       const events = data.events ?? [];
       if (events.length === 0) break;
 
-      console.log(
-        `Page ${pageIndex} - events:`,
-        events.map((e: any) => ({
-          home: e.homeTeam?.name,
-          away: e.awayTeam?.name,
-          date: new Date(e.startTimestamp * 1000).toISOString().split("T")[0],
-        })),
-      );
-      console.log(
-        "Looking for:",
-        normalizedHome,
-        "vs",
-        normalizedAway,
-        "on",
-        matchDate,
-      );
-      console.log("Total pages searched:", pageIndex);
-
       const match = events.find((event: any) => {
         const home = normalizeTeamName(event.homeTeam?.name ?? "");
         const away = normalizeTeamName(event.awayTeam?.name ?? "");
@@ -120,8 +101,6 @@ export const getSofascoreMatchId = async (
           eventDate === matchDate
         );
       });
-
-      console.log("Match found:", match?.id ?? "NOT FOUND");
 
       if (match) return match.id;
 
