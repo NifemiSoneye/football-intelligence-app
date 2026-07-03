@@ -16,6 +16,7 @@ type Props = {
   currentSeason: number;
   previousSeason: number;
   selectedSeason: number;
+  supportsPreviousSeason: boolean;
 };
 
 type Tab = "standings" | "results" | "fixtures";
@@ -28,6 +29,7 @@ export default function LeagueClient({
   currentSeason,
   previousSeason,
   selectedSeason,
+  supportsPreviousSeason,
 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -97,28 +99,30 @@ export default function LeagueClient({
         </div>
 
         {/* Season toggle */}
-        <div className="flex items-center bg-zinc-900 rounded-full p-1 shrink-0">
-          <Link
-            href={`/dashboard/league/${leagueId}?tab=${activeTab}`}
-            className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${
-              !isPrevious
-                ? "bg-[#e8ff47] text-black"
-                : "text-zinc-400 hover:text-white"
-            }`}
-          >
-            {currentSeason}/{String(currentSeason + 1).slice(2)}
-          </Link>
-          <Link
-            href={`/dashboard/league/${leagueId}?tab=${activeTab}&season=${previousSeason}`}
-            className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${
-              isPrevious
-                ? "bg-[#e8ff47] text-black"
-                : "text-zinc-400 hover:text-white"
-            }`}
-          >
-            {previousSeason}/{String(currentSeason).slice(2)}
-          </Link>
-        </div>
+        {supportsPreviousSeason && (
+          <div className="flex items-center bg-zinc-900 rounded-full p-1 shrink-0">
+            <Link
+              href={`/dashboard/league/${leagueId}?tab=${activeTab}`}
+              className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${
+                !isPrevious
+                  ? "bg-[#e8ff47] text-black"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              {currentSeason}/{String(currentSeason + 1).slice(2)}
+            </Link>
+            <Link
+              href={`/dashboard/league/${leagueId}?tab=${activeTab}&season=${previousSeason}`}
+              className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${
+                isPrevious
+                  ? "bg-[#e8ff47] text-black"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              {previousSeason}/{String(currentSeason).slice(2)}
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Tab content */}

@@ -9,6 +9,7 @@ import {
   getCachedStandings,
 } from "@/lib/cached-football-data";
 import LeagueClient from "./LeagueClient";
+import { LEAGUES } from "@/lib/constants";
 
 type Props = {
   params: Promise<{ leagueId: string }>;
@@ -35,8 +36,8 @@ export default async function LeaguePage({ params, searchParams }: Props) {
   const currentSeason = new Date(
     currentStandingsData.season.startDate,
   ).getFullYear();
-  const previousSeason = currentSeason - 1;
-
+  const league = LEAGUES.find((l) => l.id === id);
+  const previousSeason = league?.previousSeasonYear ?? currentSeason - 1;
   // selected season from URL param, default to current
   const selectedSeason = season ? Number(season) : currentSeason;
   const isPreviousSeason = selectedSeason === previousSeason;
@@ -50,6 +51,7 @@ export default async function LeaguePage({ params, searchParams }: Props) {
     getCachedLeagueFixtures(id, selectedSeason),
     getCachedLeagueResults(id, selectedSeason),
   ]);
+  const supportsPreviousSeason = league?.supportsPreviousSeason !== false;
 
   return (
     <LeagueClient
@@ -60,6 +62,7 @@ export default async function LeaguePage({ params, searchParams }: Props) {
       currentSeason={currentSeason}
       previousSeason={previousSeason}
       selectedSeason={selectedSeason}
+      supportsPreviousSeason={supportsPreviousSeason}
     />
   );
 }

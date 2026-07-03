@@ -64,6 +64,7 @@ export const LEAGUES = [
       seasonId: 96518, // 2026/27 current
       previousSeasonId: 76953, // 2025/26
     },
+    supportsPreviousSeason: false,
   },
   {
     id: 2000,
@@ -75,5 +76,7 @@ export const LEAGUES = [
       seasonId: 58210, // 2026 current
       previousSeasonId: 41087, // 2022
     },
+    previousSeasonYear: 2022,
+    supportsPreviousSeason: false,
   },
 ];
