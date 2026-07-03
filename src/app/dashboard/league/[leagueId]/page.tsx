@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { userPreferences, users } from "@/db/schema";
+import { users } from "@/db/schema";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { eq } from "drizzle-orm";
 import {
@@ -12,10 +12,12 @@ import LeagueClient from "./LeagueClient";
 
 type Props = {
   params: Promise<{ leagueId: string }>;
+  searchParams: Promise<{ season?: string; tab?: string }>;
 };
 
-export default async function LeaguePage({ params }: Props) {
+export default async function LeaguePage({ params, searchParams }: Props) {
   const { leagueId } = await params;
+  const { season } = await searchParams;
   const id = Number(leagueId);
 
   const { getUser } = getKindeServerSession();
@@ -28,12 +30,25 @@ export default async function LeaguePage({ params }: Props) {
 
   if (!dbUser) redirect("/");
 
-  const standingsData = await getCachedStandings(id);
-  const currentSeason = new Date(standingsData.season.startDate).getFullYear();
+  // always fetch current season standings first to get the current year
+  const currentStandingsData = await getCachedStandings(id);
+  const currentSeason = new Date(
+    currentStandingsData.season.startDate,
+  ).getFullYear();
+  const previousSeason = currentSeason - 1;
+
+  // selected season from URL param, default to current
+  const selectedSeason = season ? Number(season) : currentSeason;
+  const isPreviousSeason = selectedSeason === previousSeason;
+
+  // fetch standings for selected season
+  const standingsData = isPreviousSeason
+    ? await getCachedStandings(id, previousSeason)
+    : currentStandingsData;
 
   const [fixturesData, resultsData] = await Promise.all([
-    getCachedLeagueFixtures(id, currentSeason),
-    getCachedLeagueResults(id, currentSeason),
+    getCachedLeagueFixtures(id, selectedSeason),
+    getCachedLeagueResults(id, selectedSeason),
   ]);
 
   return (
@@ -42,6 +57,9 @@ export default async function LeaguePage({ params }: Props) {
       results={resultsData.matches}
       standings={standingsData}
       leagueId={id}
+      currentSeason={currentSeason}
+      previousSeason={previousSeason}
+      selectedSeason={selectedSeason}
     />
   );
 }

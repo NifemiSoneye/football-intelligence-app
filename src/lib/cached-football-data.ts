@@ -28,11 +28,12 @@ export const getCachedResults = unstable_cache(
   { revalidate: 1800 },
 );
 
-export const getCachedStandings = unstable_cache(
-  async (leagueId: number) => getStandings(leagueId),
-  ["standings"],
-  { revalidate: 3600 },
-);
+export const getCachedStandings = (leagueId: number, season?: number) =>
+  unstable_cache(
+    async () => getStandings(leagueId, season),
+    ["standings", String(leagueId), String(season ?? "current")],
+    { revalidate: 3600 },
+  )();
 
 export const getCachedLeagueTeams = unstable_cache(
   async (leagueId: number) => getLeagueTeams(leagueId),
@@ -58,17 +59,19 @@ export const getCachedTeamResults = unstable_cache(
   { revalidate: 1800 },
 );
 
-export const getCachedLeagueResults = unstable_cache(
-  async (id: number, season?: number) => getResults(id, season),
-  ["league-results"],
-  { revalidate: 1800 },
-);
+export const getCachedLeagueResults = (id: number, season?: number) =>
+  unstable_cache(
+    async () => getResults(id, season),
+    ["league-results", String(id), String(season ?? "current")],
+    { revalidate: 1800 },
+  )();
 
-export const getCachedLeagueFixtures = unstable_cache(
-  async (id: number, season?: number) => getFixtures(id, season),
-  ["league-fixtures"],
-  { revalidate: 3600 },
-);
+export const getCachedLeagueFixtures = (id: number, season?: number) =>
+  unstable_cache(
+    async () => getFixtures(id, season),
+    ["league-fixtures", String(id), String(season ?? "current")],
+    { revalidate: 3600 },
+  )();
 
 export const getCachedSofascoreMatchData = unstable_cache(
   async (
