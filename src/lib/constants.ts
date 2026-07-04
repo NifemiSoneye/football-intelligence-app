@@ -20,6 +20,7 @@ export const LEAGUES = [
       seasonId: 97268, // 2026/27 current
       previousSeasonId: 77559, // 2025/26
     },
+    supportsPreviousSeason: false,
   },
   {
     id: 2002,
@@ -31,6 +32,7 @@ export const LEAGUES = [
       seasonId: 97464, // 2026/27 current
       previousSeasonId: 77333, // 2025/26
     },
+    supportsPreviousSeason: false,
   },
   {
     id: 2019,
@@ -42,6 +44,7 @@ export const LEAGUES = [
       seasonId: 95836, // 2026/27 current
       previousSeasonId: 76457, // 2025/26
     },
+    supportsPreviousSeason: false,
   },
   {
     id: 2015,
