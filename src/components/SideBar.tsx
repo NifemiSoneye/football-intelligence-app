@@ -30,7 +30,7 @@ export default function SideBar({ leagueIds }: Props) {
       <aside
         className={`
     fixed left-0 top-0 h-full w-55 z-50
-    transition-transform duration-300 min-h-screen overflow-hidden
+    transition-transform duration-300
     flex flex-col
     ${isOpen ? "translate-x-0" : "-translate-x-full"}
     lg:translate-x-0 lg:z-auto lg:sticky lg:top-0 lg:h-screen bg-[#0a0a0a]
