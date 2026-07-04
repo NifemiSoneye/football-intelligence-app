@@ -63,7 +63,7 @@ export default function Home() {
 
         <div className="relative z-10">
           <span className="inline-block text-xs font-medium text-[#e8ff47] border border-[#e8ff47]/30 rounded-full px-3 py-1 mb-6 tracking-widest uppercase">
-            AI-powered football analysis
+            AI-powered football Analytics
           </span>
           <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
             Understand the game
@@ -220,7 +220,7 @@ export default function Home() {
       <footer className="px-6 py-8 max-w-6xl mx-auto border-t border-white/6 flex items-center justify-between">
         <span className="text-[#e8ff47] font-bold tracking-tight">FI.</span>
         <p className="text-white/20 text-xs">
-          © 2026 Football Intelligence. All rights reserved.
+          © 2026 Football Analytics. All rights reserved.
         </p>
       </footer>
     </main>

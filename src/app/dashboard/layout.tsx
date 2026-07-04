@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { SidebarProvider } from "@/context/SidebarContext";
 import SideBar from "@/components/SideBar";
 import Header from "@/components/Header";
+
 export default async function DashboardLayout({
   children,
 }: {
