@@ -21,7 +21,7 @@ export default function DashboardError({ error, reset }: Props) {
         This could be a rate limit or network issue. Try again in a moment.
       </p>
       <button
-        onClick={reset}
+        onClick={() => window.location.reload()}
         className="px-6 py-3 bg-[#e8ff47] text-black text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-yellow-300 transition-colors"
       >
         Try Again
