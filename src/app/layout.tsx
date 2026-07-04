@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Football Analytics",
   description:
     "AI-powered football analysis. Explore match stats, standings, lineups and have real AI conversations about any game across the top five European leagues.",
+  icons: {
+    icon: "/football-analytics-logo.svg",
+  },
 };
 
 const bebasNeue = Bebas_Neue({
