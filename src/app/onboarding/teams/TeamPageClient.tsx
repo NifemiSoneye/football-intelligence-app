@@ -12,14 +12,16 @@ import {
 } from "@/zod-schemas/preferences";
 import StepIndicator from "@/components/preferences/StepIndicator";
 import { Suspense } from "react";
+import { useMemo } from "react";
 
 function TeamPageClientInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedTeams, setSelectedTeams] = useState<number[]>([]);
 
-  const selectedLeagues: number[] = JSON.parse(
-    searchParams.get("leagues") ?? "[]",
+  const selectedLeagues: number[] = useMemo(
+    () => JSON.parse(searchParams.get("leagues") ?? "[]"),
+    [searchParams],
   );
 
   const { execute, isPending } = useAction(savePreferencesAction, {
