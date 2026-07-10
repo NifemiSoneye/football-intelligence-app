@@ -2,7 +2,7 @@
 
 An AI-powered football intelligence platform that lets you explore match statistics, league standings, team information, and have real AI conversations about any finished match across the top five European leagues and the Champions League.
 
-**[Live Demo](https://your-url.vercel.app)** · **[GitHub](https://github.com/NifemiSoneye/football-intelligence-app)**
+**[Live Demo](https://football-analytics-cyan.vercel.app/)** · **[GitHub](https://github.com/NifemiSoneye/football-intelligence-app)**
 
 ![Football Analytics Screenshot](./public/screenshot.png)
 
@@ -25,24 +25,25 @@ An AI-powered football intelligence platform that lets you explore match statist
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| Framework | Next.js 15 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS + Shadcn UI |
-| Database | Neon PostgreSQL |
-| ORM | Drizzle ORM |
-| Auth | Kinde |
-| AI | Anthropic Claude API (claude-sonnet-4-6) |
-| Match Data | football-data.org |
-| Rich Stats | Sofascore via RapidAPI |
-| Deployment | Vercel |
+| Category   | Technology                               |
+| ---------- | ---------------------------------------- |
+| Framework  | Next.js 15 (App Router)                  |
+| Language   | TypeScript                               |
+| Styling    | Tailwind CSS + Shadcn UI                 |
+| Database   | Neon PostgreSQL                          |
+| ORM        | Drizzle ORM                              |
+| Auth       | Kinde                                    |
+| AI         | Anthropic Claude API (claude-sonnet-4-6) |
+| Match Data | football-data.org                        |
+| Rich Stats | Sofascore via RapidAPI                   |
+| Deployment | Vercel                                   |
 
 ---
 
 ## Architecture
 
 ### Multi-API Bridge
+
 The app combines two football APIs — **football-data.org** for match metadata and **Sofascore** (via RapidAPI) for rich statistics, lineups, and incidents. Since the two APIs use different team name conventions, a normalisation layer bridges them:
 
 1. Match ID and team names are fetched from football-data.org
@@ -51,6 +52,7 @@ The app combines two football APIs — **football-data.org** for match metadata 
 4. Statistics, lineups, and incidents are fetched in parallel and cached per match
 
 ### AI Integration
+
 Each finished match generates a **match snapshot** (~600 tokens) containing the score, goals, 27 key statistics, and both starting XIs. This snapshot is injected into Claude's system prompt on every message, giving the model full match context without re-fetching data. Sessions are persisted per user per match in PostgreSQL.
 
 - Model: `claude-sonnet-4-6`
@@ -59,7 +61,9 @@ Each finished match generates a **match snapshot** (~600 tokens) containing the 
 - Estimated cost: ~$0.04–0.05 per full session
 
 ### Caching Strategy
+
 All football data is cached using Next.js `unstable_cache` with revalidation windows tuned per data type:
+
 - Match data: 24 hours
 - Standings: 1 hour
 - Fixtures: 1 hour
@@ -71,6 +75,7 @@ All football data is cached using Next.js `unstable_cache` with revalidation win
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - A Neon PostgreSQL database
 - Kinde account (auth)
