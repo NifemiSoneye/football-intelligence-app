@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        - KINDE_CLIENT_ID=${KINDE_CLIENT_ID}
+        - KINDE_CLIENT_SECRET=${KINDE_CLIENT_SECRET}
+        - KINDE_ISSUER_URL=${KINDE_ISSUER_URL}
+        - KINDE_SITE_URL=${KINDE_SITE_URL}
+        - KINDE_POST_LOGOUT_REDIRECT_URL=${KINDE_POST_LOGOUT_REDIRECT_URL}
+        - KINDE_POST_LOGIN_REDIRECT_URL=${KINDE_POST_LOGIN_REDIRECT_URL}
+        - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"

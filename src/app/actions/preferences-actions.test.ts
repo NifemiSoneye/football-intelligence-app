@@ -13,6 +13,10 @@ jest.mock("../../db/index.ts", () => ({
   },
 }));
 
+jest.mock("next/cache", () => ({
+  revalidatePath: jest.fn(),
+}));
+
 jest.mock("../../lib/safe-action", () => ({
   actionClient: {
     metadata: () => ({
@@ -21,6 +25,9 @@ jest.mock("../../lib/safe-action", () => ({
       }),
     }),
   },
+}));
+jest.mock("next-safe-action", () => ({
+  flattenValidationErrors: jest.fn(),
 }));
 
 jest.mock("@kinde-oss/kinde-auth-nextjs/server", () => ({
@@ -50,12 +57,30 @@ describe("savePreferencesAction", () => {
       mockExistingPrefs,
     );
 
-    await savePreferencesAction({
-      favoriteLeaguesIds: [2021],
-      favoriteTeamsIds: [1],
+    await (savePreferencesAction as any)({
+      parsedInput: {
+        favoriteLeaguesIds: [2021],
+        favoriteTeamsIds: [1],
+      },
     });
 
     expect(mockUpdateSet).toHaveBeenCalled();
     expect(db.insert).not.toHaveBeenCalled();
+  });
+  it("creates preferences when they dont exist", async () => {
+    const mockDbUser = { id: "user-1", kindeId: "kinde-123" };
+
+    (db.query.users.findFirst as jest.Mock).mockResolvedValue(mockDbUser);
+    (db.query.userPreferences.findFirst as jest.Mock).mockResolvedValue(null);
+
+    await (savePreferencesAction as any)({
+      parsedInput: {
+        favoriteLeaguesIds: [2021],
+        favoriteTeamsIds: [1],
+      },
+    });
+
+    expect(mockInsertValues).toHaveBeenCalled();
+    expect(db.update).not.toHaveBeenCalled();
   });
 });
